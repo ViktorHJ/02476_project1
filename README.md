@@ -1,8 +1,6 @@
-# Cifake Classification
-
+# Project Description: Cifake Classification
 A reproducible cifake classification model in a MLops dynamic framework
 
-# Project Description:
 In this project, we will try to classify AI-generated images from human-generated images in the field of art. We will be using the dataset called “CIFAKE: Real and AI-Generated Synthetic Images”. The dataset consists of the CIFAR10-dataset, a dataset consisting of 60000 coloured 32x32 images, labeled to 10 classes, and 60.000 synthetically generated images of the CIFAR10 classes. The dataset is split into 50.000 training-images and 10.000 testing-images per class. The model used for image generation was Stable Diffusion, version 1.4. Although the dataset is based on the CIFAR10 dataset, we are not interested in what the object on the image is, but whether it is real or fake. Therefore, we do not label the images to 10 different classes but rather labelled as either “REAL”- meaning human generated or “FAKE”- meaning AI-generated. The dataset has a total size of 110 MB and is publicly available on Kaggle. 
 
 We intend to use convolutional neural networks (CNN), implemented through the deep-learning framework Pytorch. We use CNN’s due to their efficiency in image-classification. Furthermore, we will use both Pytorch-Lightning to eliminate the boilerplate code for training and Torchvision to transform our datasets. 
