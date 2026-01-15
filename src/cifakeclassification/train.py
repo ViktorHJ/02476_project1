@@ -36,7 +36,6 @@ def train(batch_size: int = 128, epochs: int = 10) -> None:
         num_workers=2,
     )
     model = Cifake_CNN()
-    
 
     trainer = pl.Trainer(
         max_epochs=epochs,
@@ -44,7 +43,6 @@ def train(batch_size: int = 128, epochs: int = 10) -> None:
         devices="auto",
         log_every_n_steps=50,
     )
-
 
     trainer.fit(model, train_dataloaders=train_dataloader)
     torch.save(model.state_dict(), "models/model.pth")
