@@ -1,10 +1,8 @@
 from model import Cifake_CNN
 from cifakeclassification.data import MyDataset
 
-import matplotlib.pyplot as plt
 import torch
 import pytorch_lightning as pl
-from pytorch_lightning.callbacks import ModelCheckpoint
 import typer
 
 

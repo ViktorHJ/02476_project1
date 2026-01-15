@@ -130,7 +130,7 @@ def download_CIFAKE_dataset(data_dir: str = "data"):
         
     print("Downloading CIFake dataset...")
     os.system(
-        f"kaggle datasets download birdy654/cifake-real-and-ai-generated-synthetic-images"
+        "kaggle datasets download birdy654/cifake-real-and-ai-generated-synthetic-images"
     )
     print("Download complete. Extracting files...")
     os.system(f"unzip cifake-real-and-ai-generated-synthetic-images.zip -d {data_dir}")

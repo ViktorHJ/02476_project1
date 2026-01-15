@@ -1,7 +1,6 @@
 from torch import nn
 import torch
 import pytorch_lightning as pl
-import typer
 
 class Cifake_CNN(pl.LightningModule):
 

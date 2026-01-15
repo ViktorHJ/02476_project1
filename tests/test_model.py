@@ -1,6 +1,6 @@
 from src.cifakeclassification.model import Cifake_CNN
 import torch
-import pytest
+
 
 def test_model_shape():
     model = Cifake_CNN()
