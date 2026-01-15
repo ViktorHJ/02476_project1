@@ -183,3 +183,6 @@ lightning_logs/
 *.ckpt
 *.pth
 models/
+
+# The data directory
+data/
