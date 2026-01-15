@@ -12,3 +12,6 @@ uv sync --dev
 
 # Install pre-commit hooks
 uv run pre-commit install --install-hooks
+
+# Auto-activate virtual environment in new shells
+echo "source $(pwd)/.venv/bin/activate" >> ~/.bashrc

@@ -17,8 +17,8 @@
                 "python.testing.pytestArgs": ["tests"],
                 "python.testing.unittestEnabled": false,
                 "python.testing.pytestEnabled": true,
-                "python.defaultInterpreterPath": "/workspaces/cifakeclassification/.venv/bin/python",
-                "python.testing.pytestPath": "/workspaces/cifakeclassification/.venv/bin/pytest"
+                "python.defaultInterpreterPath": "/workspaces/${localWorkspaceFolderBasename}/.venv/bin/python",
+                "python.testing.pytestPath": "/workspaces/${localWorkspaceFolderBasename}/.venv/bin/pytest"
             }
         }
     }
