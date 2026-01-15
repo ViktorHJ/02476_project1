@@ -1,7 +1,7 @@
 from torch import nn
 import torch
 
-class Model(nn.Module):
+class Cifake_CNN(nn.Module):
     """Just a dummy model to show how to structure your code"""
     def __init__(self):
         super().__init__()
@@ -11,6 +11,6 @@ class Model(nn.Module):
         return self.layer(x)
 
 if __name__ == "__main__":
-    model = Model()
+    model = Cifake_CNN()
     x = torch.rand(1)
     print(f"Output shape of model: {model(x).shape}")
