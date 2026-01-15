@@ -1,8 +1,11 @@
-#! /usr/bin/env bash
+#!/usr/bin/env bash
+set -e
+
+# Fix permissions
+sudo chown -R vscode:vscode .
 
 # Install uv
 curl -LsSf https://astral.sh/uv/install.sh | sh
-source $HOME/.cargo/env
 
 # Install Dependencies
 uv sync --dev
