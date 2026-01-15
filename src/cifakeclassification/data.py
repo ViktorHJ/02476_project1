@@ -21,7 +21,7 @@ class ImageDataModule(pl.LightningDataModule):
         batch_size: int = 32,
         num_workers: int = 4,
         val_split: float = 0.2,
-        image_size: Tuple[int, int] = (3, 32, 32),
+        image_size: Tuple[int, int] = (32, 32),
         random_seed: int = 42,
         cuda: bool = False,
     ):
@@ -34,10 +34,16 @@ class ImageDataModule(pl.LightningDataModule):
         self.random_seed = random_seed
         self.cuda = cuda
 
-        self.transform = transforms.ToTensor()
+        self.transform = transforms.Compose(
+            [
+                transforms.Resize(self.image_size),
+                transforms.ToTensor(),
+            ]
+        )
         
         # One generator used everywhere
         self.generator = torch.Generator().manual_seed(self.random_seed)
+    
     
     def setup(self, stage: Optional[str] = None):
         """Create datasets. Called automatically by Lightning."""
@@ -48,6 +54,7 @@ class ImageDataModule(pl.LightningDataModule):
             transform=self.transform,
         )
         
+        # Classes and number of classes
         self.classes = full_train_dataset.classes
         self.num_classes = len(self.classes)
 
