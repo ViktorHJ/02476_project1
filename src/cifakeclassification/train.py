@@ -1,12 +1,16 @@
-from model import Cifake_CNN
-from data import MyDataset
+from cifakeclassification.model import Cifake_CNN
+# from data import MyDataset
 import torch
 import pytorch_lightning as pl
 from torchvision.datasets import MNIST
 from torchvision import transforms
 from torch.utils.data import DataLoader
+import typer
+
+app = typer.Typer()
 
 
+@app.command()
 def train(batch_size: int = 128, epochs: int = 10) -> None:
     """Train a model on MNIST."""
     print("Training day and night")
@@ -32,6 +36,7 @@ def train(batch_size: int = 128, epochs: int = 10) -> None:
         num_workers=2,
     )
     model = Cifake_CNN()
+    
 
     trainer = pl.Trainer(
         max_epochs=epochs,
@@ -45,9 +50,8 @@ def train(batch_size: int = 128, epochs: int = 10) -> None:
     torch.save(model.state_dict(), "models/model.pth")
 
 
-if __name__ == "__main__":
-    train()
-
-
 def main() -> None:
-    train()
+    app()
+
+if __name__ == "__main__":
+    main()

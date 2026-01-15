@@ -63,3 +63,8 @@ line-length = 120
 
 [tool.coverage.run]
 omit = ["tests/*"]
+
+[project.scripts]
+train = "cifakeclassification.train:main"
+model = "cifakeclassification.model:main"
+evaluate = "cifakeclassification.evaluate:main"

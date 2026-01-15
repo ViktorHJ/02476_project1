@@ -1,6 +1,7 @@
 from torch import nn
 import torch
 import pytorch_lightning as pl
+import typer
 
 class Cifake_CNN(pl.LightningModule):
 
@@ -51,8 +52,10 @@ class Cifake_CNN(pl.LightningModule):
         """Configure optimizer."""
         return torch.optim.Adam(self.parameters(), lr=1e-3)
 
+def main() -> None:
+    model = Cifake_CNN()
+    x = torch.rand(2, 1, 28, 28)
+    print(model(x).shape)
 
 if __name__ == "__main__":
-    model = Cifake_CNN()
-    x = torch.rand(1)
-    print(f"Output shape of model: {model(x).shape}")
+    main()
