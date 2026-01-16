@@ -43,13 +43,13 @@ def visualize_train_from_wandb(
     output_path.mkdir(parents=True, exist_ok=True)
 
     metrics = [
-        ("train_loss", "Train Loss"),
-        ("train_acc", "Train Accuracy"),
-        ("val_loss", "Validation Loss"),
-        ("val_acc", "Validation Accuracy"),
+        ("train/loss", "Train Loss", "train_loss"),
+        ("train/acc", "Train Accuracy", "train_acc"),
+        ("val/loss", "Validation Loss", "val_loss"),
+        ("val/acc", "Validation Accuracy", "val_acc"),
     ]
 
-    for metric, title in metrics:
+    for metric, metric_title, metric_name in metrics:
         if metric not in history:
             print(f"Skipping {metric} (not found)")
             continue
@@ -57,11 +57,11 @@ def visualize_train_from_wandb(
         plt.figure()
         plt.plot(history["_step"][history[metric].notnull()], history[metric][history[metric].notnull()], label=metric)
         plt.xlabel("Steps")
-        plt.ylabel(metric)
-        plt.title(title)
+        plt.ylabel(metric_title)
+        plt.title(metric_title)
         plt.grid(True)
 
-        save_path = output_path / f"{run.name}_{metric}.png"
+        save_path = output_path / f"{run.name}_{metric_name}.png"
         plt.savefig(save_path)
         plt.close()
 
