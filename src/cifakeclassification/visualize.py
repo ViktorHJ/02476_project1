@@ -68,5 +68,10 @@ def visualize_train_from_wandb(
         print(f"Saved {save_path}")
 
 
+@app.command()
+def visualize_eval():
+    pass
+
+
 if __name__ == "__main__":
     app()
