@@ -5,14 +5,15 @@ import pytorch_lightning as pl
 import hydra
 from pathlib import Path
 
-class Cifake_CNN(pl.LightningModule):
 
-    def __init__(self, 
-                 activation_function: str = 'relu', 
-                 dropout_rate: float = 0.3, 
-                 learning_rate: float = 0.001,
-                 optimizer: str = 'adam') -> None:
-        
+class Cifake_CNN(pl.LightningModule):
+    def __init__(
+        self,
+        activation_function: str = "relu",
+        dropout_rate: float = 0.3,
+        learning_rate: float = 0.001,
+        optimizer: str = "adam",
+    ) -> None:
         super().__init__()
         self.conv1 = nn.Conv2d(3, 32, 3)
         self.conv2 = nn.Conv2d(32, 64, 3)
@@ -25,22 +26,21 @@ class Cifake_CNN(pl.LightningModule):
         self.loss_fn = torch.nn.CrossEntropyLoss()
 
         activation_functions = {
-            'relu': nn.ReLU(),
-            'leaky_relu': nn.LeakyReLU(),
-            'sigmoid': nn.Sigmoid(),
-            'tanh': nn.Tanh()
+            "relu": nn.ReLU(),
+            "leaky_relu": nn.LeakyReLU(),
+            "sigmoid": nn.Sigmoid(),
+            "tanh": nn.Tanh(),
         }
 
         optim = {
-            'adam': torch.optim.Adam,
-            'sgd': torch.optim.SGD,
+            "adam": torch.optim.Adam,
+            "sgd": torch.optim.SGD,
         }
 
         self.optimizer = optim[optimizer]
 
         self.activation = activation_functions[activation_function]
         self.loss_fn = nn.CrossEntropyLoss()
-
 
     def forward(self, x):
         x = self.pool(self.activation(self.conv1(x)))
@@ -73,15 +73,24 @@ class Cifake_CNN(pl.LightningModule):
         self.log("val_loss", loss, on_epoch=True)
         self.log("val_acc", acc, on_epoch=True)
 
+    def test_step(self, batch) -> None:
+        data, target = batch
+        preds = self(data)
+        loss = self.loss_fn(preds, target)
+        acc = (target == preds.argmax(dim=-1)).float().mean()
+        self.log("test_loss", loss, on_epoch=True)
+        self.log("test_acc", acc, on_epoch=True)
+
     def configure_optimizers(self):
         """Configure optimizer."""
         return torch.optim.Adam(self.parameters(), lr=self.learning_rate)
-    
+
+
 # @hydra.main(version_base=None, config_path="../../configs", config_name="config")
 CONFIG_DIR = Path(__file__).resolve().parents[2] / "configs"  # -> 02476_project1/configs
+
+
 @hydra.main(version_base=None, config_path=str(CONFIG_DIR), config_name="config")
-
-
 def main(cfg: DictConfig) -> None:
     hp = cfg.hyperparameters
 
@@ -96,7 +105,6 @@ def main(cfg: DictConfig) -> None:
     y = model(x)
     print("Output shape:", y.shape)
     print(f"Hyperparameters: {hp}")
-
 
 
 if __name__ == "__main__":
