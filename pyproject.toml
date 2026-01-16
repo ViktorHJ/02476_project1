@@ -56,11 +56,6 @@ name = "pytorch-cpu"
 url = "https://download.pytorch.org/whl/cpu"
 explicit = true
 
-[tool.uv.workspace]
-members = [
-    "02476_project1",
-]
-
 [tool.ruff]
 line-length = 120
 

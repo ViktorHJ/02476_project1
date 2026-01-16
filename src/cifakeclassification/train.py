@@ -12,7 +12,15 @@ import os
 load_dotenv()
 
 
-def train(batch_size: int = 128, epochs: int = 10) -> None:
+def train(
+    batch_size: int = 128,
+    epochs: int = 2,
+    learning_rate: float = 1e-3,
+    dropout_rate: float = 0.3,
+    optimizer: str = "adam",
+    activation_function: str = "relu",
+    architecture: str = "Cifake_CNN_small",
+):
     """Train a model on MNIST with W&B."""
 
     # W&B config from .env
@@ -30,6 +38,11 @@ def train(batch_size: int = 128, epochs: int = 10) -> None:
         {
             "batch_size": batch_size,
             "epochs": epochs,
+            "learning_rate": learning_rate,
+            "dropout_rate": dropout_rate,
+            "optimizer": optimizer,
+            "activation_function": activation_function,
+            "architecture": architecture,
         }
     )
 
@@ -39,7 +52,13 @@ def train(batch_size: int = 128, epochs: int = 10) -> None:
         val_split=0.2,
     )
 
-    model = Cifake_CNN()
+    model = Cifake_CNN(
+        learning_rate=learning_rate,
+        dropout_rate=dropout_rate,
+        optimizer=optimizer,
+        activation_function=activation_function,
+        architecture=architecture,
+    )
 
     trainer = pl.Trainer(
         max_epochs=epochs,
