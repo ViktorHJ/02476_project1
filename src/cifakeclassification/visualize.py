@@ -11,6 +11,7 @@ matplotlib.use("Agg")
 
 import wandb
 import matplotlib.pyplot as plt
+import pandas as pd
 
 load_dotenv()
 app = typer.Typer()
@@ -37,7 +38,7 @@ def visualize_train_from_wandb(
     print(f"Found run: {run.name} (id={run.id})")
 
     # Get history as DataFrame
-    history = run.history(samples=10000)
+    history = pd.DataFrame(run.history(samples=10000))
 
     output_path = Path(output_dir)
     output_path.mkdir(parents=True, exist_ok=True)
