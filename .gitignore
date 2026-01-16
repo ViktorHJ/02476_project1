@@ -184,5 +184,6 @@ lightning_logs/
 *.pth
 models/
 
-# The data directory
+# The data directories
 data/
+wandb/
