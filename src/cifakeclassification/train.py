@@ -4,10 +4,7 @@ import torch
 import pytorch_lightning as pl
 import typer
 
-app = typer.Typer()
 
-
-@app.command()
 def train(batch_size: int = 128, epochs: int = 10) -> None:
     """Train a model on MNIST."""
 
@@ -26,16 +23,11 @@ def train(batch_size: int = 128, epochs: int = 10) -> None:
         log_every_n_steps=50,
     )
 
-
-
     trainer.fit(model, datamodule=datamodule)
     torch.save(model.state_dict(), "models/model.pth")
 
 
-def main() -> None:
-    app()
-
 if __name__ == "__main__":
-    main()
+    typer.run(train)
 
-#testing workflows
+# testing workflows

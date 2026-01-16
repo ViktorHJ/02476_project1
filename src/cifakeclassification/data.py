@@ -40,11 +40,10 @@ class ImageDataModule(pl.LightningDataModule):
                 transforms.ToTensor(),
             ]
         )
-        
+
         # One generator used everywhere
         self.generator = torch.Generator().manual_seed(self.random_seed)
-    
-    
+
     def setup(self, stage: Optional[str] = None):
         """Create datasets. Called automatically by Lightning."""
 
@@ -53,7 +52,7 @@ class ImageDataModule(pl.LightningDataModule):
             root=self.data_dir / "train",
             transform=self.transform,
         )
-        
+
         # Classes and number of classes
         self.classes = full_train_dataset.classes
         self.num_classes = len(self.classes)
@@ -73,13 +72,13 @@ class ImageDataModule(pl.LightningDataModule):
             root=self.data_dir / "test",
             transform=self.transform,
         )
-        
+
     def _seed_worker(self, worker_id):
         worker_seed = self.random_seed + worker_id
         np.random.seed(worker_seed)
         random.seed(worker_seed)
         torch.manual_seed(worker_seed)
-        
+
     def train_dataloader(self):
         return DataLoader(
             self.train_dataset,
@@ -115,35 +114,36 @@ class ImageDataModule(pl.LightningDataModule):
             persistent_workers=self.num_workers > 0,
             pin_memory=True if self.cuda else False,
         )
-        
+
+
 @app.command()
 def download_CIFAKE_dataset(data_dir: str = "data"):
     """Download the CIFake dataset from Kaggle and extract it to the specified directory.
-    
+
     Args:
         data_dir (str): Directory to download and extract the dataset to.
     """
     data_dir = Path(data_dir)
-    
+
     if not os.path.exists(data_dir):
         os.makedirs(data_dir)
     else:
-        resp = input(f"Data directory {data_dir} already exists. Continue and potentially overwrite existing data? (y/n): ")
+        resp = input(
+            f"Data directory {data_dir} already exists. Continue and potentially overwrite existing data? (y/n): "
+        )
         if resp.lower() != "y" and resp.lower() != "yes":
             print("Download cancelled.")
             return
         print("Clearing existing data...")
         os.system(f"rm -rf {data_dir}/*")
-        
+
     print("Downloading CIFake dataset...")
-    os.system(
-        "kaggle datasets download birdy654/cifake-real-and-ai-generated-synthetic-images"
-    )
+    os.system("kaggle datasets download birdy654/cifake-real-and-ai-generated-synthetic-images")
     print("Download complete. Extracting files...")
     os.system(f"unzip cifake-real-and-ai-generated-synthetic-images.zip -d {data_dir}")
     os.system("rm cifake-real-and-ai-generated-synthetic-images.zip")
     print("Extraction complete.")
-    
+
 
 @app.command()
 def create_data_module(
@@ -155,8 +155,8 @@ def create_data_module(
     random_seed: int = 42,
     cuda: bool = False,
 ) -> ImageDataModule:
-    """Helper function to create an ImageDataModule with specified parameters.
-    
+    """Helper function to test an ImageDataModule with specified parameters.
+
     Args:
         data_dir (str): Directory where the dataset is located.
         batch_size (int): Batch size for data loaders.
@@ -165,10 +165,10 @@ def create_data_module(
         image_size (Tuple[int, int]): Size to which images will be resized.
         random_seed (int): Random seed for reproducibility.
         cuda (bool): Whether to use CUDA (GPU) or not.
-        
+
     Returns:
         ImageDataModule: Configured data module."""
-        
+
     return ImageDataModule(
         data_dir=data_dir,
         batch_size=batch_size,
@@ -178,6 +178,7 @@ def create_data_module(
         random_seed=random_seed,
         cuda=cuda,
     )
+
 
 if __name__ == "__main__":
     app()

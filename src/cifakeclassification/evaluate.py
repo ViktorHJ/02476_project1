@@ -1,11 +1,8 @@
-from model import Cifake_CNN
-from cifakeclassification.data import MyDataset
+from cifakeclassification.model import Cifake_CNN
+from cifakeclassification.data import ImageDataModule
 
-import torch
 import pytorch_lightning as pl
 import typer
-
-
 
 
 def evaluate(model_checkpoint: str) -> None:
@@ -16,13 +13,9 @@ def evaluate(model_checkpoint: str) -> None:
     model = Cifake_CNN.load_from_checkpoint(model_checkpoint)
 
     # Data
-    _, test_set = MyDataset
-    test_dataloader = torch.utils.data.DataLoader(
-        test_set,
-        batch_size=32,
-        shuffle=False,
-        num_workers=2,
-    )
+    datamodule = ImageDataModule()
+    datamodule.setup()
+    test_dataloader = datamodule.test_dataloader()
 
     # Trainer
     trainer = pl.Trainer(

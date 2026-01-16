@@ -1,9 +1,10 @@
 from torch import nn
 import torch
 import pytorch_lightning as pl
+import typer
+
 
 class Cifake_CNN(pl.LightningModule):
-
     def __init__(self) -> None:
         super().__init__()
         self.conv1 = nn.Conv2d(3, 32, 3)
@@ -51,10 +52,15 @@ class Cifake_CNN(pl.LightningModule):
         """Configure optimizer."""
         return torch.optim.Adam(self.parameters(), lr=1e-3)
 
-def main() -> None:
+
+def model() -> None:
+    """
+    Test the model architecture.
+    """
     model = Cifake_CNN()
     x = torch.rand(2, 3, 32, 32)
     print(model(x).shape)
 
+
 if __name__ == "__main__":
-    main()
+    typer.run(model)
