@@ -106,6 +106,7 @@ def main(cfg: DictConfig) -> None:
         dropout_rate=hp.dropout_rate,
         learning_rate=hp.learning_rate,
         optimizer=hp.optimizer,
+        architecture=hp.architecture,
     )
 
     x = torch.rand(2, 3, 32, 32)
