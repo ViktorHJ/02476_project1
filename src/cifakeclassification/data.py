@@ -68,10 +68,16 @@ class ImageDataModule(pl.LightningDataModule):
         )
 
         # Test dataset
-        self.test_dataset = datasets.ImageFolder(
+        test_ds = datasets.ImageFolder(
             root=self.data_dir / "test",
             transform=self.transform,
         )
+
+        # random permutation of indices to "shuffle" the test set once
+        # (Else the first half is always Real and the second half Fake)
+        # This helps when visualizing test results
+        indices = torch.randperm(len(test_ds), generator=self.generator).tolist()
+        self.test_dataset = torch.utils.data.Subset(test_ds, indices)
 
     def _seed_worker(self, worker_id):
         worker_seed = self.random_seed + worker_id
