@@ -115,20 +115,20 @@ will check the repositories and the code to verify your answers.
 * [x] Create the initial file structure using cookiecutter with an appropriate template (M6)
 * [x] Fill out the `data.py` file such that it downloads whatever data you need and preprocesses it (if necessary) (M6)
 * [x] Add a model to `model.py` and a training procedure to `train.py` and get that running (M6)
-* [o] Remember to fill out the `requirements.txt` and `requirements_dev.txt` file with whatever dependencies that you
+* [x] Remember to fill out the `requirements.txt` and `requirements_dev.txt` file with whatever dependencies that you
     are using (M2+M6)
 * [t] Remember to comply with good coding practices (`pep8`) while doing the project (M7)
 * [t] Do a bit of code typing and remember to document essential parts of your code (M7)
 * [t] Setup version control for your data or part of your data (M8)
 * [t] Add command line interfaces and project commands to your code where it makes sense (M9)
-* [t] Construct one or multiple docker files for your code (M10)
-* [t] Build the docker files locally and make sure they work as intended (M10)
-* [t] Write one or multiple configurations files for your experiments (M11)
+* [o] Construct one or multiple docker files for your code (M10)
+* [o] Build the docker files locally and make sure they work as intended (M10)
+* [o] Write one or multiple configurations files for your experiments (M11)
 * [t*] Used Hydra to load the configurations and manage your hyperparameters (M11)
 * [t] Use profiling to optimize your code (M12)
-* [t] Use logging to log important events in your code (M14)
-* [t] Use Weights & Biases to log training progress and other important metrics/artifacts in your code (M14)
-* [t] Consider running a hyperparameter optimization sweep (M14)
+* [o] Use logging to log important events in your code (M14)
+* [o] Use Weights & Biases to log training progress and other important metrics/artifacts in your code (M14)
+* [o] Consider running a hyperparameter optimization sweep (M14)
 * [x] Use PyTorch-lightning (if applicable) to reduce the amount of boilerplate in your code (M15)
 
 ### Week 2
@@ -649,3 +649,4 @@ fewafewubaofewnafioewnifowf ewafw afew afewafewafionewoanf waf ewonfieownaf fewn
   ew ag ioreabnguorwa bg̈́aw
    wa
    gew4igioera giroeahgi0wra gwa
+
