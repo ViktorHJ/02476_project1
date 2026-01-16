@@ -1,7 +1,6 @@
 from pathlib import Path
 import hydra
 from omegaconf import DictConfig
-import torch
 import pytorch_lightning as pl
 from cifakeclassification.model import Cifake_CNN
 from cifakeclassification.data import ImageDataModule
@@ -11,10 +10,7 @@ import wandb
 import os
 import sys
 
-sys.argv = [sys.argv[0]] + [
-    a[2:] if a.startswith("--") and "=" in a else a
-    for a in sys.argv[1:]
-]
+sys.argv = [sys.argv[0]] + [a[2:] if a.startswith("--") and "=" in a else a for a in sys.argv[1:]]
 
 
 load_dotenv()
@@ -77,9 +73,10 @@ def train(cfg: DictConfig):
     trainer.fit(model, datamodule=datamodule)
 
     # Save model
-    save_path = "models/model.pth"
-    Path("models").mkdir(exist_ok=True)
-    torch.save(model.state_dict(), save_path)
+    out_dir = Path(hydra.utils.to_absolute_path("models"))
+    out_dir.mkdir(exist_ok=True)
+    save_path = f"{out_dir}/model.ckpt"
+    trainer.save_checkpoint(save_path, weights_only=False)
 
     # Log artifact
     artifact = wandb.Artifact("cifake-model", type="model")

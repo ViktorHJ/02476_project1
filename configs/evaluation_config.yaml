@@ -1,0 +1,9 @@
+#data_evaluate.yaml
+data:
+  directory: "data"
+  batch_size: 64
+  num_workers: 0
+  random_seed: 42
+
+model:
+  model_checkpoint: "model.ckpt"
