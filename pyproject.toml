@@ -73,3 +73,5 @@ model = "cifakeclassification.model:main"
 evaluate = "cifakeclassification.evaluate:main"
 download_CIFAKE_dataset = "cifakeclassification.data:download_CIFAKE_dataset"
 create_data_module = "cifakeclassification.data:create_data_module"
+
+create_req_files = "cifakeclassification.utils:create_req_files"
