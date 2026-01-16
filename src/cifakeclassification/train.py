@@ -1,17 +1,14 @@
 from pathlib import Path
 import hydra
 from omegaconf import DictConfig
-import torch
 import pytorch_lightning as pl
 from cifakeclassification.model import Cifake_CNN
 from cifakeclassification.data import ImageDataModule
 
 CONFIG_DIR = Path(__file__).resolve().parents[2] / "configs"  # -> 02476_project1/configs
+
+
 @hydra.main(version_base=None, config_path=str(CONFIG_DIR), config_name="config")
-
-
-
-# @hydra.main(version_base=None, config_path="../../configs", config_name="config")
 def train(cfg: DictConfig) -> None:
     hp = cfg.hyperparameters
 
@@ -33,14 +30,14 @@ def train(cfg: DictConfig) -> None:
         accelerator="auto",
         devices="auto",
         log_every_n_steps=50,
-        logger=wandb_logger,
     )
 
     trainer.fit(model, datamodule=datamodule)
 
     out_dir = Path(hydra.utils.to_absolute_path("models"))
     out_dir.mkdir(exist_ok=True)
-    torch.save(model.state_dict(), out_dir / "model.pth")
+    trainer.save_checkpoint(out_dir / "model.ckpt", weights_only=False)
+
 
 if __name__ == "__main__":
     train()
