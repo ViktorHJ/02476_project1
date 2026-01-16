@@ -1,16 +1,23 @@
 from cifakeclassification.model import Cifake_CNN
 from cifakeclassification.data import ImageDataModule
-
+from dotenv import load_dotenv
 import pytorch_lightning as pl
 import typer
 import wandb
+import os
+
+load_dotenv()
 
 
 def evaluate(model_checkpoint: str) -> None:
     print("Evaluating like my life depended on it")
     print(model_checkpoint)
 
-    with wandb.init(project="02476_project1", entity="vhj-dtu", job_type="evaluation") as run:
+    # W&B config from .env
+    project = os.getenv("WANDB_PROJECT")
+    entity = os.getenv("WANDB_ENTITY")
+
+    with wandb.init(project=project, entity=entity, job_type="evaluation") as run:
         # Link this evaluation run to the model artifact
         # artifact = run.use_artifact("cifake-model:latest")
         # artifact_dir = artifact.download()
