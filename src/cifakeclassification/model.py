@@ -6,14 +6,14 @@ class Cifake_CNN(pl.LightningModule):
 
     def __init__(self) -> None:
         super().__init__()
-        self.conv1 = nn.Conv2d(1, 32, 3)
+        self.conv1 = nn.Conv2d(3, 32, 3)
         self.conv2 = nn.Conv2d(32, 64, 3)
         self.conv3 = nn.Conv2d(64, 128, 3)
         self.activation = nn.ReLU()
         self.dropout = nn.Dropout(0.3)
         self.pool = nn.MaxPool2d(2, 2)
         self.flatten = nn.Flatten()
-        self.fc = nn.Linear(128, 10)
+        self.fc = nn.Linear(512, 2)
         self.loss_fn = torch.nn.CrossEntropyLoss()
 
     def forward(self, x):
