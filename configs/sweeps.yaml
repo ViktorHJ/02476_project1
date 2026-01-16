@@ -1,4 +1,6 @@
 program: src/cifakeclassification/train.py
+project: 02476_project1
+entity: vhj-dtu
 method: bayes
 
 metric:

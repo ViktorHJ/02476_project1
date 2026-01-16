@@ -9,12 +9,19 @@ from pytorch_lightning.loggers import WandbLogger
 from dotenv import load_dotenv
 import wandb
 import os
+import sys
+
+sys.argv = [sys.argv[0]] + [
+    a[2:] if a.startswith("--") and "=" in a else a
+    for a in sys.argv[1:]
+]
 
 
 load_dotenv()
+CONFIG_DIR = Path(__file__).resolve().parents[2] / "configs"
 
 
-@hydra.main(version_base=None, config_path="../../configs", config_name="config")
+@hydra.main(version_base=None, config_path=str(CONFIG_DIR), config_name="config")
 def train(cfg: DictConfig):
     hp = cfg.hyperparameters
 
@@ -45,7 +52,7 @@ def train(cfg: DictConfig):
     # Data
     datamodule = ImageDataModule(
         batch_size=hp.batch_size,
-        num_workers=4,
+        num_workers=0,
         val_split=0.2,
     )
 
