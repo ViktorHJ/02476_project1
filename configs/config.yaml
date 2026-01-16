@@ -1,0 +1,7 @@
+hyperparameters:
+  activation_function: 'relu'
+  learning_rate: 0.001
+  dropout_rate: 0.3
+  optimizer: 'adam'
+  batch_size: 512
+  epochs: 10
