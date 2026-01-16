@@ -36,7 +36,7 @@ jobs:
 
       - name: fetch data
         run: |
-          uv run download_data
+          uv run data download
 
       - name: Run tests & coverage
         run: |

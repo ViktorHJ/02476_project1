@@ -187,3 +187,7 @@ models/
 # The data directories
 data/
 wandb/
+
+
+# Reports and figures
+reports/

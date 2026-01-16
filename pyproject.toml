@@ -20,6 +20,7 @@ requires-python = ">=3.12"
 dependencies = [
     "fastapi==0.115.6",
     "matplotlib>=3.10.8",
+    "pandas>=2.3.3",
     "python-dotenv>=1.2.1",
     "pytorch-lightning>=2.6.0",
     "torch==2.6.0",
@@ -79,7 +80,7 @@ omit = [
 train = "cifakeclassification.train:train"
 model = "cifakeclassification.model:model"
 evaluate = "cifakeclassification.evaluate:evaluate"
-download_data = "cifakeclassification.data:download_CIFAKE_dataset"
-create_data_module = "cifakeclassification.data:create_data_module"
+data = "cifakeclassification.data:app"
+visualize = "cifakeclassification.visualize:app"
 
 create_req_files = "cifakeclassification.utils:create_req_files"

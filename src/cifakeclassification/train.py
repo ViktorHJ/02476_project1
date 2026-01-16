@@ -32,6 +32,7 @@ def train(batch_size: int = 128, epochs: int = 10) -> None:
             "epochs": epochs,
         }
     )
+    run = wandb_logger.experiment
 
     datamodule = ImageDataModule(
         batch_size=batch_size,
@@ -60,6 +61,13 @@ def train(batch_size: int = 128, epochs: int = 10) -> None:
     artifact = wandb.Artifact("cifake-model", type="model")
     artifact.add_file(save_path)
     wandb_logger.experiment.log_artifact(artifact)
+
+    run_id = run.id
+    run_name = run.name
+    with open("reports/last_run.txt", "w") as f:
+        f.write("Run name: " + run_name + "\n" + "Run ID: " + run_id)
+
+    wandb.Api()
 
     wandb.finish()
 
