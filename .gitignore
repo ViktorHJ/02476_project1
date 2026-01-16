@@ -187,3 +187,6 @@ models/
 # The data directories
 data/
 wandb/
+
+# Hydra outputs
+outputs/

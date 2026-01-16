@@ -1,3 +1,8 @@
+from pathlib import Path
+import hydra
+from omegaconf import DictConfig
+import torch
+import pytorch_lightning as pl
 from cifakeclassification.model import Cifake_CNN
 from cifakeclassification.data import ImageDataModule
 from pytorch_lightning.loggers import WandbLogger
@@ -47,8 +52,8 @@ def train(
     )
 
     datamodule = ImageDataModule(
-        batch_size=batch_size,
-        num_workers=4,
+        batch_size=hp.batch_size,
+        num_workers=0,
         val_split=0.2,
     )
 
@@ -61,7 +66,7 @@ def train(
     )
 
     trainer = pl.Trainer(
-        max_epochs=epochs,
+        max_epochs=hp.epochs,
         accelerator="auto",
         devices="auto",
         log_every_n_steps=50,
@@ -84,8 +89,9 @@ def train(
 
     # torch.save(model.state_dict(), "models/model.pth")
 
+    out_dir = Path(hydra.utils.to_absolute_path("models"))
+    out_dir.mkdir(exist_ok=True)
+    torch.save(model.state_dict(), out_dir / "model.pth")
 
 if __name__ == "__main__":
-    typer.run(train)
-
-# testing workflows
+    train()

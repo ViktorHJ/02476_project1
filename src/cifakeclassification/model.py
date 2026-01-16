@@ -1,7 +1,9 @@
+from omegaconf import DictConfig
 from torch import nn
 import torch
 import pytorch_lightning as pl
-
+import hydra
+from pathlib import Path
 
 class Cifake_CNN(pl.LightningModule):
     def __init__(
@@ -88,3 +90,29 @@ class Cifake_CNN(pl.LightningModule):
             return torch.optim.SGD(self.parameters(), lr=self.hparams.learning_rate)
         else:
             raise ValueError(f"Unknown optimizer: {self.hparams.optimizer}")
+        """Configure optimizer."""
+        return torch.optim.Adam(self.parameters(), lr=1e-3)
+
+
+# @hydra.main(version_base=None, config_path="../../configs", config_name="config")
+CONFIG_DIR = Path(__file__).resolve().parents[2] / "configs"  # -> 02476_project1/configs
+@hydra.main(version_base=None, config_path=str(CONFIG_DIR), config_name="config")
+
+
+def main(cfg: DictConfig) -> None:
+    hp = cfg.hyperparameters
+
+    model = Cifake_CNN(
+        activation_function=hp.activation_function,
+        dropout_rate=hp.dropout_rate,
+        learning_rate=hp.learning_rate,
+        optimizer=hp.optimizer,
+    )
+
+    x = torch.rand(2, 3, 32, 32)
+    y = model(x)
+    print("Output shape:", y.shape)
+    print(f"Hyperparameters: {hp}")
+
+if __name__ == "__main__":
+    main()

@@ -650,3 +650,38 @@ fewafewubaofewnafioewnifowf ewafw afew afewafewafionewoanf waf ewonfieownaf fewn
    wa
    gew4igioera giroeahgi0wra gwa
 
+
+
+
+
+
+
+# COPY PASTA
+
+## UV .venv commands
+### Install pre-commit hooks
+uv run pre-commit install --install-hooks
+### Install Dependencies
+uv sync --dev
+
+## GIT
+### GIT woorktree ingore
+git update-index --skip-worktree .env
+
+# Dependencies so far
+## WSL 2 
+sudo apt get unzip
+
+## Unix
+
+## train()
+uv run train.py \
+  --batch_size=64 \
+  --epochs=5 \
+  --learning_rate=0.001 \
+  --dropout_rate=0.3 \
+  --optimizer=adam \
+  --activation_function=relu \
+  --architecture=Cifake_CNN_small
+
+
