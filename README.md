@@ -673,3 +673,15 @@ git update-index --skip-worktree .env
 sudo apt get unzip
 
 ## Unix
+
+## train()
+uv run train.py \
+  --batch_size=64 \
+  --epochs=5 \
+  --learning_rate=0.001 \
+  --dropout_rate=0.3 \
+  --optimizer=adam \
+  --activation_function=relu \
+  --architecture=Cifake_CNN_small
+
+
