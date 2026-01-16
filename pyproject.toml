@@ -78,7 +78,7 @@ omit = [
 [project.scripts]
 
 train = "cifakeclassification.train:train"
-model = "cifakeclassification.model:model"
+model = "cifakeclassification.model:main"
 evaluate = "cifakeclassification.evaluate:evaluate"
 download_data = "cifakeclassification.data:download_CIFAKE_dataset"
 
