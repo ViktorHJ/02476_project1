@@ -12,7 +12,7 @@ import os
 load_dotenv()
 
 
-def train(batch_size: int = 128, epochs: int = 10) -> None:
+def train(batch_size: int = 128, epochs: int = 2) -> None:
     """Train a model on MNIST with W&B."""
 
     # W&B config from .env
