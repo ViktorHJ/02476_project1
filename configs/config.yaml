@@ -4,4 +4,5 @@ hyperparameters:
   dropout_rate: 0.3
   optimizer: 'adam'
   batch_size: 512
-  epochs: 10
+  epochs: 2
+  architecture: "Cifake_CNN_small"
