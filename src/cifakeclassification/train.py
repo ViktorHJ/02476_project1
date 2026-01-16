@@ -7,9 +7,6 @@ from cifakeclassification.model import Cifake_CNN
 from cifakeclassification.data import ImageDataModule
 from pytorch_lightning.loggers import WandbLogger
 from dotenv import load_dotenv
-import torch
-import pytorch_lightning as pl
-import typer
 import wandb
 import os
 
@@ -17,16 +14,9 @@ import os
 load_dotenv()
 
 
-def train(
-    batch_size: int = 128,
-    epochs: int = 2,
-    learning_rate: float = 1e-3,
-    dropout_rate: float = 0.3,
-    optimizer: str = "adam",
-    activation_function: str = "relu",
-    architecture: str = "Cifake_CNN_small",
-):
-    """Train a model on MNIST with W&B."""
+@hydra.main(version_base=None, config_path="../../configs", config_name="config")
+def train(cfg: DictConfig):
+    hp = cfg.hyperparameters
 
     # W&B config from .env
     project = os.getenv("WANDB_PROJECT")
@@ -39,32 +29,36 @@ def train(
         save_dir=".",
     )
 
+    # Log hyperparameters to W&B
     wandb_logger.experiment.config.update(
         {
-            "batch_size": batch_size,
-            "epochs": epochs,
-            "learning_rate": learning_rate,
-            "dropout_rate": dropout_rate,
-            "optimizer": optimizer,
-            "activation_function": activation_function,
-            "architecture": architecture,
+            "batch_size": hp.batch_size,
+            "epochs": hp.epochs,
+            "learning_rate": hp.learning_rate,
+            "dropout_rate": hp.dropout_rate,
+            "optimizer": hp.optimizer,
+            "activation_function": hp.activation_function,
+            "architecture": hp.architecture,
         }
     )
 
+    # Data
     datamodule = ImageDataModule(
         batch_size=hp.batch_size,
-        num_workers=0,
+        num_workers=4,
         val_split=0.2,
     )
 
+    # Model
     model = Cifake_CNN(
-        learning_rate=learning_rate,
-        dropout_rate=dropout_rate,
-        optimizer=optimizer,
-        activation_function=activation_function,
-        architecture=architecture,
+        learning_rate=hp.learning_rate,
+        dropout_rate=hp.dropout_rate,
+        optimizer=hp.optimizer,
+        activation_function=hp.activation_function,
+        architecture=hp.architecture,
     )
 
+    # Trainer
     trainer = pl.Trainer(
         max_epochs=hp.epochs,
         accelerator="auto",
@@ -75,23 +69,18 @@ def train(
 
     trainer.fit(model, datamodule=datamodule)
 
-    # -------------------------
-    # Save + log artifact
-    # -------------------------
+    # Save model
     save_path = "models/model.pth"
+    Path("models").mkdir(exist_ok=True)
     torch.save(model.state_dict(), save_path)
 
+    # Log artifact
     artifact = wandb.Artifact("cifake-model", type="model")
     artifact.add_file(save_path)
     wandb_logger.experiment.log_artifact(artifact)
 
     wandb.finish()
 
-    # torch.save(model.state_dict(), "models/model.pth")
-
-    out_dir = Path(hydra.utils.to_absolute_path("models"))
-    out_dir.mkdir(exist_ok=True)
-    torch.save(model.state_dict(), out_dir / "model.pth")
 
 if __name__ == "__main__":
     train()
