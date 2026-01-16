@@ -6,24 +6,24 @@ metric:
   goal: minimize
 
 parameters:
-  learning-rate:
+  hyperparameters.learning_rate:
     distribution: log_uniform_values
     min: 1e-4
     max: 1e-1
 
-  batch-size:
+  hyperparameters.batch_size:
     values: [32, 64, 128, 256]
 
-  dropout-rate:
+  hyperparameters.dropout_rate:
     distribution: uniform
     min: 0.1
     max: 0.5
 
-  architecture:
+  hyperparameters.architecture:
     values: ["Cifake_CNN_small", "Cifake_CNN_medium", "Cifake_Wild_large"]
 
-  optimizer:
+  hyperparameters.optimizer:
     values: ["adam", "sgd"]
 
-  activation-function:
+  hyperparameters.activation_function:
     values: ["relu", "tanh", "sigmoid", "leaky_relu"]
