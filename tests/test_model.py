@@ -1,4 +1,4 @@
-from src.cifakeclassification.model import Cifake_CNN
+from cifakeclassification.model import Cifake_CNN
 import torch
 
 
