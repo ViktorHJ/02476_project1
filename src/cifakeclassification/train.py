@@ -2,9 +2,6 @@ from cifakeclassification.model import Cifake_CNN
 from cifakeclassification.data import ImageDataModule
 import torch
 import pytorch_lightning as pl
-from torchvision.datasets import MNIST
-from torchvision import transforms
-from torch.utils.data import DataLoader
 import typer
 
 app = typer.Typer()
