@@ -5,6 +5,7 @@ import pytorch_lightning as pl
 import hydra
 from pathlib import Path
 
+
 class Cifake_CNN(pl.LightningModule):
     def __init__(
         self,
@@ -96,9 +97,9 @@ class Cifake_CNN(pl.LightningModule):
 
 # @hydra.main(version_base=None, config_path="../../configs", config_name="config")
 CONFIG_DIR = Path(__file__).resolve().parents[2] / "configs"  # -> 02476_project1/configs
+
+
 @hydra.main(version_base=None, config_path=str(CONFIG_DIR), config_name="config")
-
-
 def main(cfg: DictConfig) -> None:
     hp = cfg.hyperparameters
 
@@ -113,6 +114,7 @@ def main(cfg: DictConfig) -> None:
     y = model(x)
     print("Output shape:", y.shape)
     print(f"Hyperparameters: {hp}")
+
 
 if __name__ == "__main__":
     main()
