@@ -1,13 +1,13 @@
 # Project Description: Cifake Classification
 A reproducible cifake classification model in a MLops dynamic framework
 
-In this project, we will try to classify AI-generated images from human-generated images in the field of art. We will be using the dataset called “CIFAKE: Real and AI-Generated Synthetic Images”. The dataset consists of the CIFAR10-dataset, a dataset consisting of 60000 coloured 32x32 images, labeled to 10 classes, and 60.000 synthetically generated images of the CIFAR10 classes. The dataset is split into 50.000 training-images and 10.000 testing-images per class. The model used for image generation was Stable Diffusion, version 1.4. Although the dataset is based on the CIFAR10 dataset, we are not interested in what the object on the image is, but whether it is real or fake. Therefore, we do not label the images to 10 different classes but rather labelled as either “REAL”- meaning human generated or “FAKE”- meaning AI-generated. The dataset has a total size of 110 MB and is publicly available on [Kaggle](https://www.kaggle.com/datasets/birdy654/cifake-real-and-ai-generated-synthetic-images?resource=download). 
+In this project, we will try to classify AI-generated images from human-generated images in the field of art. We will be using the dataset called “CIFAKE: Real and AI-Generated Synthetic Images”. The dataset consists of the CIFAR10-dataset, a dataset consisting of 60000 coloured 32x32 images, labeled to 10 classes, and 60.000 synthetically generated images of the CIFAR10 classes. The dataset is split into 50.000 training-images and 10.000 testing-images per class. The model used for image generation was Stable Diffusion, version 1.4. Although the dataset is based on the CIFAR10 dataset, we are not interested in what the object on the image is, but whether it is real or fake. Therefore, we do not label the images to 10 different classes but rather labelled as either “REAL”- meaning human generated or “FAKE”- meaning AI-generated. The dataset has a total size of 110 MB and is publicly available on [Kaggle](https://www.kaggle.com/datasets/birdy654/cifake-real-and-ai-generated-synthetic-images?resource=download).
 
-We intend to use convolutional neural networks (CNN), implemented through the deep-learning framework Pytorch. We use CNN’s due to their efficiency in image-classification. Furthermore, we will use both Pytorch-Lightning to eliminate the boilerplate code for training and Torchvision to transform our datasets. 
+We intend to use convolutional neural networks (CNN), implemented through the deep-learning framework Pytorch. We use CNN’s due to their efficiency in image-classification. Furthermore, we will use both Pytorch-Lightning to eliminate the boilerplate code for training and Torchvision to transform our datasets.
 We will use Weights-and-Biases to try different configurations of hyperparameters and architectures and use their built-in Bayesian Optimization option to go for the best-possible model. The results of our experiments will also be logged here.
 The first few days will be spent setting up a git repository, then a reproducable virtual environment with  docker, cookiecutter and uv. Then the data-processing, the model, as well as the training and validation processes, will all be implemented with the help of debugging tools, and finally we will format everything to fit PEP8-guidelines.
 
-Our overall goal is to train a model that outperforms random guessing. Maybe, if time permits it, we will also try to compare our final model to the VGG16- a deep convolutional neural network. Another goal for us is to gain a better understanding of the MLOPs-tools taught in the course, and to be able to build a project with perfectly reproduceable results. 
+Our overall goal is to train a model that outperforms random guessing. Maybe, if time permits it, we will also try to compare our final model to the VGG16- a deep convolutional neural network. Another goal for us is to gain a better understanding of the MLOPs-tools taught in the course, and to be able to build a project with perfectly reproduceable results.
 
 ## Project structure
 
@@ -115,7 +115,7 @@ will check the repositories and the code to verify your answers.
 * [x] Create the initial file structure using cookiecutter with an appropriate template (M6)
 * [x] Fill out the `data.py` file such that it downloads whatever data you need and preprocesses it (if necessary) (M6)
 * [x] Add a model to `model.py` and a training procedure to `train.py` and get that running (M6)
-* [t] Remember to fill out the `requirements.txt` and `requirements_dev.txt` file with whatever dependencies that you
+* [o] Remember to fill out the `requirements.txt` and `requirements_dev.txt` file with whatever dependencies that you
     are using (M2+M6)
 * [t] Remember to comply with good coding practices (`pep8`) while doing the project (M7)
 * [t] Do a bit of code typing and remember to document essential parts of your code (M7)
@@ -129,11 +129,11 @@ will check the repositories and the code to verify your answers.
 * [t] Use logging to log important events in your code (M14)
 * [t] Use Weights & Biases to log training progress and other important metrics/artifacts in your code (M14)
 * [t] Consider running a hyperparameter optimization sweep (M14)
-* [t] Use PyTorch-lightning (if applicable) to reduce the amount of boilerplate in your code (M15)
+* [x] Use PyTorch-lightning (if applicable) to reduce the amount of boilerplate in your code (M15)
 
 ### Week 2
 
-* [t] Write unit tests related to the data part of your code (M16)
+* [x] Write unit tests related to the data part of your code (M16)
 * [t] Write unit tests related to model construction and or model training (M16)
 * [t] Calculate the code coverage (M16)
 * [t] Get some continuous integration running on the GitHub repository (M17)
