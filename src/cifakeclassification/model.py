@@ -42,7 +42,7 @@ class Cifake_CNN(pl.LightningModule):
         layers = []
         in_channels = 3
         for out_channels in channels:
-            layers.append(nn.Conv2d(in_channels, out_channels, 3))
+            layers.append(nn.Conv2d(in_channels, out_channels, 3, padding=1))
             layers.append(self.activation)
             layers.append(nn.MaxPool2d(2, 2))
             in_channels = out_channels
