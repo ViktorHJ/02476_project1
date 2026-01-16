@@ -65,7 +65,14 @@ members = [
 line-length = 120
 
 [tool.coverage.run]
-omit = ["tests/*"]
+omit = [
+  "tests/*",
+  "**/_remote_module_non_scriptable.py",
+  "/private/var/folders/*",
+  "/var/folders/*",
+  "*/site-packages/*",
+]
+
 
 [project.scripts]
 
@@ -77,11 +84,3 @@ create_data_module = "cifakeclassification.data:create_data_module"
 
 create_req_files = "cifakeclassification.utils:create_req_files"
 
-[tool.coverage.run]
-omit = [
-  "tests/*",
-  "**/_remote_module_non_scriptable.py",
-  "/private/var/folders/*",
-  "/var/folders/*",
-  "*/site-packages/*",
-]
