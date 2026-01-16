@@ -14,9 +14,7 @@ from cifakeclassification.data import ImageDataModule
 
 
 load_dotenv()
-
 CONFIG_DIR = Path(__file__).resolve().parents[2] / "configs"  # -> 02476_project1/configs
-
 
 def log_test_predictions(model, dataloader, run, num_samples=32):
     """
@@ -29,11 +27,19 @@ def log_test_predictions(model, dataloader, run, num_samples=32):
     # Get one batch of data
     batch = next(iter(dataloader))
     imgs, labels = batch
+    # W&B config from .env
+    project = os.getenv("WANDB_PROJECT")
+    entity = os.getenv("WANDB_ENTITY")
 
-    with torch.no_grad():
-        logits = model(imgs)
-        preds = torch.argmax(logits, dim=-1)
-        probs = torch.softmax(logits, dim=-1)
+    with wandb.init(project=project, entity=entity, job_type="evaluation") as run:
+        # Link this evaluation run to the model artifact
+        # artifact = run.use_artifact("cifake-model:latest")
+        # artifact_dir = artifact.download()
+
+    # with torch.no_grad():
+    #     logits = model(imgs)
+    #     preds = torch.argmax(logits, dim=-1)
+    #     probs = torch.softmax(logits, dim=-1)
 
     # Class labels for CIFAKE
     class_labels = ["Real", "Fake"]
