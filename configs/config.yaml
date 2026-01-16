@@ -5,3 +5,4 @@ hyperparameters:
   optimizer: 'adam'
   batch_size: 512
   epochs: 10
+  architecture: 'Cifake_CNN_small'

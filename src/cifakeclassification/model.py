@@ -6,6 +6,7 @@ import hydra
 from pathlib import Path
 
 
+
 class Cifake_CNN(pl.LightningModule):
     def __init__(
         self,
@@ -13,7 +14,7 @@ class Cifake_CNN(pl.LightningModule):
         dropout_rate: float = 0.3,
         optimizer: str = "adam",
         activation_function: str = "relu",
-        architecture: str = "small",
+        architecture: str = "Cifake_CNN_small",
     ):
         super().__init__()
 
@@ -28,16 +29,15 @@ class Cifake_CNN(pl.LightningModule):
             "leaky_relu": nn.LeakyReLU(),
         }
         self.activation = activations[activation_function]
-
+        self.learning_rate = learning_rate
         # Architecture selection
-        if architecture == "Cifake_CNN_small":
-            channels = [32, 64]
-        elif architecture == "Cifake_CNN_medium":
-            channels = [32, 64, 128]
-        elif architecture == "Cifake_Wild_large":
-            channels = [32, 64, 128, 256]
-        else:
-            raise ValueError(f"Unknown architecture: {architecture}")
+        arcs = {
+            "Cifake_CNN_small": [32, 64],
+            "Cifake_CNN_medium": [32, 64, 128],
+            "Cifake_Wild_large": [32, 64, 128, 256],
+        }
+
+        channels = arcs[architecture]
 
         layers = []
         in_channels = 3
@@ -56,6 +56,12 @@ class Cifake_CNN(pl.LightningModule):
 
         self.dropout = nn.Dropout(dropout_rate)
         self.fc = nn.Linear(flat_dim, 2)
+
+        optim = {
+            "adam": torch.optim.Adam,
+            "sgd": torch.optim.SGD,
+        }
+        self.optimizer_class = optim[optimizer]
 
         self.loss_fn = nn.CrossEntropyLoss()
 
@@ -85,15 +91,7 @@ class Cifake_CNN(pl.LightningModule):
         self.log("val/acc", acc, on_epoch=True)
 
     def configure_optimizers(self):
-        if self.hparams.optimizer == "adam":
-            return torch.optim.Adam(self.parameters(), lr=self.hparams.learning_rate)
-        elif self.hparams.optimizer == "sgd":
-            return torch.optim.SGD(self.parameters(), lr=self.hparams.learning_rate)
-        else:
-            raise ValueError(f"Unknown optimizer: {self.hparams.optimizer}")
-        """Configure optimizer."""
-        return torch.optim.Adam(self.parameters(), lr=1e-3)
-
+        return self.optimizer_class(self.parameters(), lr=self.hparams.learning_rate)
 
 # @hydra.main(version_base=None, config_path="../../configs", config_name="config")
 CONFIG_DIR = Path(__file__).resolve().parents[2] / "configs"  # -> 02476_project1/configs
