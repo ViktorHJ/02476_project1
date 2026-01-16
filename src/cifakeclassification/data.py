@@ -169,6 +169,7 @@ def create_data_module(
     Returns:
         ImageDataModule: Configured data module."""
 
+    print("HI")
     return ImageDataModule(
         data_dir=data_dir,
         batch_size=batch_size,

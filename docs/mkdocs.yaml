@@ -1,5 +1,5 @@
 site_name: cifakeclassification
-site_author: Viktor H Jørgensen, Aslan D Behbahani, William Mistarz
+site_author: Viktor H Jørgensen, Aslan D Behbahani, William Egholm Mistarz
 docs_dir: source
 
 theme:
