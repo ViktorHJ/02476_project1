@@ -44,6 +44,7 @@ def train(cfg: DictConfig):
             "architecture": hp.architecture,
         }
     )
+    run = wandb_logger.experiment
 
     # Data
     datamodule = ImageDataModule(
@@ -82,6 +83,13 @@ def train(cfg: DictConfig):
     artifact = wandb.Artifact("cifake-model", type="model")
     artifact.add_file(save_path)
     wandb_logger.experiment.log_artifact(artifact)
+
+    run_id = run.id
+    run_name = run.name
+    with open("reports/last_run_wandb.txt", "w") as f:
+        f.write("Run name: " + run_name + "\n" + "Run ID: " + run_id)
+
+    wandb.Api()
 
     wandb.finish()
 

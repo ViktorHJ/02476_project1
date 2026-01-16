@@ -14,7 +14,7 @@ jobs:
     strategy:
       matrix:
         operating-system: ["ubuntu-latest", "windows-latest", "macos-latest"]
-        python-version: ["3.12"]
+        python-version: ["3.13"]
 
     steps:
       - name: Checkout code
@@ -36,7 +36,7 @@ jobs:
 
       - name: fetch data
         run: |
-          uv run download_data
+          uv run data download
 
       - name: Run tests & coverage
         run: |

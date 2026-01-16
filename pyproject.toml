@@ -16,7 +16,7 @@ classifiers = [
   "Programming Language :: Python :: 3",
 ]
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.13"
 dependencies = [
     "fastapi==0.115.6",
     "hydra-core>=1.3.2",
@@ -26,7 +26,7 @@ dependencies = [
     "pytorch-lightning>=2.6.0",
     "torch==2.6.0",
     "torchvision>=0.21.0",
-    "typer==0.15.1",
+    "typer>=0.21.1",
     "uvicorn==0.34.0",
     "wandb>=0.24.0",
 ]
@@ -76,8 +76,7 @@ omit = [
 train = "cifakeclassification.train:train"
 model = "cifakeclassification.model:main"
 evaluate = "cifakeclassification.evaluate:evaluate"
-download_data = "cifakeclassification.data:download_CIFAKE_dataset"
-
-create_data_module = "cifakeclassification.data:create_data_module"
+data = "cifakeclassification.data:app"
+visualize = "cifakeclassification.visualize:app"
 
 create_req_files = "cifakeclassification.utils:create_req_files"

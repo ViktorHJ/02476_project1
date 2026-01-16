@@ -117,7 +117,7 @@ class ImageDataModule(pl.LightningDataModule):
 
 
 @app.command()
-def download_CIFAKE_dataset(data_dir: str = "data"):
+def download(data_dir: str = "data"):
     """Download the CIFake dataset from Kaggle and extract it to the specified directory.
 
     Args:
@@ -169,6 +169,7 @@ def create_data_module(
     Returns:
         ImageDataModule: Configured data module."""
 
+    print("HI")
     return ImageDataModule(
         data_dir=data_dir,
         batch_size=batch_size,

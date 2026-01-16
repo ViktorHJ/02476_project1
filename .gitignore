@@ -190,3 +190,6 @@ wandb/
 
 # Hydra outputs
 outputs/
+
+# Reports and figures
+reports/
