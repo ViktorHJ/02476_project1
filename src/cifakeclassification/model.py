@@ -53,7 +53,7 @@ class Cifake_CNN(pl.LightningModule):
 
 def main() -> None:
     model = Cifake_CNN()
-    x = torch.rand(2, 1, 28, 28)
+    x = torch.rand(2, 3, 32, 32)
     print(model(x).shape)
 
 if __name__ == "__main__":

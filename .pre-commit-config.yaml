@@ -10,3 +10,15 @@ repos:
     -   id: check-added-large-files
     -   id: name-tests-test
     -   id: check-merge-conflict
+
+repos:
+- repo: https://github.com/astral-sh/ruff-pre-commit
+  # Ruff version.
+  rev: v0.14.13
+  hooks:
+    # Run the linter.
+    - id: ruff-check
+      args: [ --fix ]
+    # Run the formatter.
+    - id: ruff-format
+    - id: ruff-check

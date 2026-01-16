@@ -14,16 +14,10 @@ app = typer.Typer()
 def train(batch_size: int = 128, epochs: int = 10) -> None:
     """Train a model on MNIST."""
 
-    transform = transforms.Compose([
-    transforms.ToTensor(),
-    ])
-
-
     datamodule = ImageDataModule(
         batch_size=batch_size,
         num_workers=0,
         val_split=0.2,
-        cuda=False,  # set True only if using CUDA; for MPS keep False
     )
 
     model = Cifake_CNN()
