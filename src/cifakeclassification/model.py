@@ -1,21 +1,46 @@
+from omegaconf import DictConfig
 from torch import nn
 import torch
 import pytorch_lightning as pl
-import typer
-
+import hydra
+from pathlib import Path
 
 class Cifake_CNN(pl.LightningModule):
-    def __init__(self) -> None:
+
+    def __init__(self, 
+                 activation_function: str = 'relu', 
+                 dropout_rate: float = 0.3, 
+                 learning_rate: float = 0.001,
+                 optimizer: str = 'adam') -> None:
+        
         super().__init__()
         self.conv1 = nn.Conv2d(3, 32, 3)
         self.conv2 = nn.Conv2d(32, 64, 3)
         self.conv3 = nn.Conv2d(64, 128, 3)
-        self.activation = nn.ReLU()
-        self.dropout = nn.Dropout(0.3)
         self.pool = nn.MaxPool2d(2, 2)
         self.flatten = nn.Flatten()
         self.fc = nn.Linear(512, 2)
+        self.dropout = nn.Dropout(dropout_rate)
+        self.learning_rate = learning_rate
         self.loss_fn = torch.nn.CrossEntropyLoss()
+
+        activation_functions = {
+            'relu': nn.ReLU(),
+            'leaky_relu': nn.LeakyReLU(),
+            'sigmoid': nn.Sigmoid(),
+            'tanh': nn.Tanh()
+        }
+
+        optim = {
+            'adam': torch.optim.Adam,
+            'sgd': torch.optim.SGD,
+        }
+
+        self.optimizer = optim[optimizer]
+
+        self.activation = activation_functions[activation_function]
+        self.loss_fn = nn.CrossEntropyLoss()
+
 
     def forward(self, x):
         x = self.pool(self.activation(self.conv1(x)))
@@ -50,17 +75,29 @@ class Cifake_CNN(pl.LightningModule):
 
     def configure_optimizers(self):
         """Configure optimizer."""
-        return torch.optim.Adam(self.parameters(), lr=1e-3)
+        return torch.optim.Adam(self.parameters(), lr=self.learning_rate)
+    
+# @hydra.main(version_base=None, config_path="../../configs", config_name="config")
+CONFIG_DIR = Path(__file__).resolve().parents[2] / "configs"  # -> 02476_project1/configs
+@hydra.main(version_base=None, config_path=str(CONFIG_DIR), config_name="config")
 
 
-def model() -> None:
-    """
-    Test the model architecture.
-    """
-    model = Cifake_CNN()
+def main(cfg: DictConfig) -> None:
+    hp = cfg.hyperparameters
+
+    model = Cifake_CNN(
+        activation_function=hp.activation_function,
+        dropout_rate=hp.dropout_rate,
+        learning_rate=hp.learning_rate,
+        optimizer=hp.optimizer,
+    )
+
     x = torch.rand(2, 3, 32, 32)
-    print(model(x).shape)
+    y = model(x)
+    print("Output shape:", y.shape)
+    print(f"Hyperparameters: {hp}")
+
 
 
 if __name__ == "__main__":
-    typer.run(model)
+    main()
