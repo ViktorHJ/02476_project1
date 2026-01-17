@@ -12,7 +12,6 @@ import pytorch_lightning as pl
 import wandb
 from pytorch_lightning.loggers import WandbLogger
 from pytorch_lightning.callbacks import ModelSummary as SummaryCallback
-from pytorch_lightning.utilities.model_summary import ModelSummary as SummaryUtility
 
 
 from cifakeclassification.model import Cifake_CNN
@@ -70,9 +69,9 @@ def train(cfg: DictConfig):
     )
 
     # FLOPs + params
-    summary = SummaryUtility(model, max_depth=-1)
-    wandb.log({"model/FLOPs": summary.total_flops})
-    wandb.log({"model/num_params": sum(p.numel() for p in model.parameters())})
+    # summary = SummaryUtility(model, max_depth=-1)
+    # wandb.log({"model/FLOPs": summary.total_flops})
+    # wandb.log({"model/num_params": sum(p.numel() for p in model.parameters())})
 
     # Trainer
     trainer = pl.Trainer(
