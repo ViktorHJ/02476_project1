@@ -684,4 +684,8 @@ uv run train.py \
   --activation_function=relu \
   --architecture=Cifake_CNN_small
 
+Switch to GPU:
+sed -i 's/pytorch-cpu/pytorch-gpu/g' pyproject.toml && sed -i 's|https://download.pytorch.org/whl/cpu|https://download.pytorch.org/whl/cu124|g' pyproject.toml && rm uv.lock && uv sync
 
+Switch back to CPU:
+sed -i 's/pytorch-gpu/pytorch-cpu/g' pyproject.toml && sed -i 's|https://download.pytorch.org/whl/cu124|https://download.pytorch.org/whl/cpu|g' pyproject.toml && rm uv.lock && uv sync
