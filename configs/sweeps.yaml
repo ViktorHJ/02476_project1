@@ -1,4 +1,7 @@
-program: src/cifakeclassification/train.py
+command:
+  - python
+  - src/cifakeclassification/train.py
+  - ${args_no_hyphens}
 project: 02476_project1
 entity: vhj-dtu
 method: bayes
@@ -29,3 +32,6 @@ parameters:
 
   hyperparameters.activation_function:
     values: ["relu", "tanh", "sigmoid", "leaky_relu"]
+
+  hyperparameters.max_epochs:
+    values: [5, 10, 20, 30]

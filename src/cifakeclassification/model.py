@@ -6,7 +6,6 @@ import hydra
 from pathlib import Path
 
 
-
 class Cifake_CNN(pl.LightningModule):
     def __init__(
         self,
@@ -43,7 +42,7 @@ class Cifake_CNN(pl.LightningModule):
         in_channels = 3
         for out_channels in channels:
             layers.append(nn.Conv2d(in_channels, out_channels, 3, padding=1))
-            layers.append(self.activation)
+            layers.append(activations[activation_function].__class__())
             layers.append(nn.MaxPool2d(2, 2))
             in_channels = out_channels
 
@@ -51,6 +50,7 @@ class Cifake_CNN(pl.LightningModule):
 
         # Compute flattened size dynamically
         dummy = torch.zeros(1, 3, 32, 32)
+
         with torch.no_grad():
             flat_dim = self.feature_extractor(dummy).numel()
 
@@ -64,6 +64,10 @@ class Cifake_CNN(pl.LightningModule):
         self.optimizer_class = optim[optimizer]
 
         self.loss_fn = nn.CrossEntropyLoss()
+
+    @property
+    def example_input_array(self):
+        return torch.randn(1, 3, 32, 32)
 
     def forward(self, x):
         x = self.feature_extractor(x)
@@ -92,6 +96,7 @@ class Cifake_CNN(pl.LightningModule):
 
     def configure_optimizers(self):
         return self.optimizer_class(self.parameters(), lr=self.hparams.learning_rate)
+
 
 # @hydra.main(version_base=None, config_path="../../configs", config_name="config")
 CONFIG_DIR = Path(__file__).resolve().parents[2] / "configs"  # -> 02476_project1/configs

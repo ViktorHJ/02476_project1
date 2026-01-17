@@ -6,23 +6,26 @@ import pytorch_lightning as pl
 from cifakeclassification.model import Cifake_CNN
 from cifakeclassification.data import ImageDataModule
 from pytorch_lightning.loggers import WandbLogger
+from pytorch_lightning.callbacks import ModelSummary as SummaryCallback
+from pytorch_lightning.utilities.model_summary import ModelSummary as SummaryUtility
 from dotenv import load_dotenv
 import wandb
 import os
-import sys
-
-sys.argv = [sys.argv[0]] + [
-    a[2:] if a.startswith("--") and "=" in a else a
-    for a in sys.argv[1:]
-]
-
+# import sys
 
 load_dotenv()
-CONFIG_DIR = Path(__file__).resolve().parents[2] / "configs"
 
 
-@hydra.main(version_base=None, config_path=str(CONFIG_DIR), config_name="config")
+@hydra.main(version_base=None, config_path="../../configs", config_name="config")
 def train(cfg: DictConfig):
+    # --- DEBUG: show where Hydra is looking for configs ---
+    # from hydra.core.hydra_config import HydraConfig
+    # search_path = HydraConfig.get().runtime.config_sources
+    # print("\n[HYDRA DEBUG] Config search path:")
+    # for src in search_path:
+    #    print("  -", src.provider, "→", src.path)
+    # print()
+
     hp = cfg.hyperparameters
 
     # W&B config from .env
@@ -40,7 +43,7 @@ def train(cfg: DictConfig):
     wandb_logger.experiment.config.update(
         {
             "batch_size": hp.batch_size,
-            "epochs": hp.epochs,
+            "max_epochs": hp.max_epochs,
             "learning_rate": hp.learning_rate,
             "dropout_rate": hp.dropout_rate,
             "optimizer": hp.optimizer,
@@ -52,7 +55,7 @@ def train(cfg: DictConfig):
     # Data
     datamodule = ImageDataModule(
         batch_size=hp.batch_size,
-        num_workers=0,
+        num_workers=4,
         val_split=0.2,
     )
 
@@ -65,12 +68,19 @@ def train(cfg: DictConfig):
         architecture=hp.architecture,
     )
 
+    # FLOPs + params
+    summary = SummaryUtility(model, max_depth=-1)
+    wandb.log({"model/FLOPs": summary.total_flops})
+    wandb.log({"model/num_params": sum(p.numel() for p in model.parameters())})
+
     # Trainer
     trainer = pl.Trainer(
-        max_epochs=hp.epochs,
+        max_epochs=hp.max_epochs,
+        log_every_n_steps=50,
+        enable_model_summary=True,
+        callbacks=[SummaryCallback(max_depth=-1)],
         accelerator="auto",
         devices="auto",
-        log_every_n_steps=50,
         logger=wandb_logger,
     )
 
