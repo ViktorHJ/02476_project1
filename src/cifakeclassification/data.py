@@ -19,7 +19,7 @@ class ImageDataModule(pl.LightningDataModule):
         self,
         data_dir: str = "data",
         batch_size: int = 32,
-        num_workers: int = 4,
+        num_workers: int = 8,
         val_split: float = 0.2,
         image_size: Tuple[int, int] = (32, 32),
         random_seed: int = 42,
@@ -88,7 +88,7 @@ class ImageDataModule(pl.LightningDataModule):
             generator=self.generator,
             worker_init_fn=self._seed_worker,
             persistent_workers=self.num_workers > 0,
-            pin_memory=True if self.cuda else False,
+            pin_memory=torch.cuda.is_available(),
         )
 
     def val_dataloader(self):
@@ -100,7 +100,7 @@ class ImageDataModule(pl.LightningDataModule):
             generator=self.generator,
             worker_init_fn=self._seed_worker,
             persistent_workers=self.num_workers > 0,
-            pin_memory=True if self.cuda else False,
+            pin_memory=torch.cuda.is_available(),
         )
 
     def test_dataloader(self):
@@ -149,7 +149,7 @@ def download_CIFAKE_dataset(data_dir: str = "data"):
 def create_data_module(
     data_dir: str = "data",
     batch_size: int = 32,
-    num_workers: int = 4,
+    num_workers: int = 12,
     val_split: float = 0.2,
     image_size: Tuple[int, int] = (32, 32),
     random_seed: int = 42,

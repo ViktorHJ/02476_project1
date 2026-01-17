@@ -689,3 +689,5 @@ sed -i 's/pytorch-cpu/pytorch-gpu/g' pyproject.toml && sed -i 's|https://downloa
 
 Switch back to CPU:
 sed -i 's/pytorch-gpu/pytorch-cpu/g' pyproject.toml && sed -i 's|https://download.pytorch.org/whl/cu124|https://download.pytorch.org/whl/cpu|g' pyproject.toml && rm uv.lock && uv sync
+
+uv run python src/cifakeclassification/data.py download-cifake-datasets

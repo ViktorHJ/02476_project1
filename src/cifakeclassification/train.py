@@ -23,6 +23,10 @@ import os
 pl.seed_everything(hash("setting random seeds") % 2**32 - 1)
 load_dotenv()
 
+# Add this here to ensure it is set before the Trainer starts
+torch.set_float32_matmul_precision('medium')
+torch.backends.cudnn.benchmark = True
+
 
 @hydra.main(version_base=None, config_path="../../configs", config_name="config")
 def train(cfg: DictConfig):
@@ -55,7 +59,7 @@ def train(cfg: DictConfig):
     # Data
     datamodule = ImageDataModule(
         batch_size=hp.batch_size,
-        num_workers=4,
+        num_workers=8,
         val_split=0.2,
     )
 
@@ -81,6 +85,7 @@ def train(cfg: DictConfig):
         callbacks=[SummaryCallback(max_depth=-1)],
         accelerator="auto",
         devices="auto",
+        precision="16-mixed",  # safe: ignored on CPU
         logger=wandb_logger,
     )
 
