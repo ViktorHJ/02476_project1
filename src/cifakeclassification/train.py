@@ -1,31 +1,32 @@
 from pathlib import Path
 import hydra
 from omegaconf import DictConfig
+
+# 🍦 Vanilla PyTorch
 import torch
+
+# ⚡ PyTorch Lightning
 import pytorch_lightning as pl
-from cifakeclassification.model import Cifake_CNN
-from cifakeclassification.data import ImageDataModule
+
+# 🏋️‍♀️ Weights & Biases
+import wandb
 from pytorch_lightning.loggers import WandbLogger
 from pytorch_lightning.callbacks import ModelSummary as SummaryCallback
 from pytorch_lightning.utilities.model_summary import ModelSummary as SummaryUtility
-from dotenv import load_dotenv
-import wandb
-import os
-# import sys
 
+
+from cifakeclassification.model import Cifake_CNN
+from cifakeclassification.data import ImageDataModule
+
+from dotenv import load_dotenv
+import os
+
+pl.seed_everything(hash("setting random seeds") % 2**32 - 1)
 load_dotenv()
 
 
 @hydra.main(version_base=None, config_path="../../configs", config_name="config")
 def train(cfg: DictConfig):
-    # --- DEBUG: show where Hydra is looking for configs ---
-    # from hydra.core.hydra_config import HydraConfig
-    # search_path = HydraConfig.get().runtime.config_sources
-    # print("\n[HYDRA DEBUG] Config search path:")
-    # for src in search_path:
-    #    print("  -", src.provider, "→", src.path)
-    # print()
-
     hp = cfg.hyperparameters
 
     # W&B config from .env
