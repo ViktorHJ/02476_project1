@@ -2,9 +2,10 @@ command:
   - python
   - src/cifakeclassification/train.py
   - ${args_no_hyphens}
+
 project: 02476_project1
 entity: vhj-dtu
-method: bayes
+method: grid
 
 metric:
   name: val/loss
@@ -12,26 +13,22 @@ metric:
 
 parameters:
   hyperparameters.learning_rate:
-    distribution: log_uniform_values
-    min: 1e-4
-    max: 1e-2
+    values: [0.0003, 0.001, 0.003]   # low, mid, high
 
   hyperparameters.batch_size:
-    values: [32, 64, 128, 256]
+    values: [128, 256]          
 
   hyperparameters.dropout_rate:
-    distribution: uniform
-    min: 0.1
-    max: 0.5
+    values: [0.1, 0.3, 0.5]          # light, medium, heavy
 
   hyperparameters.architecture:
-    values: ["CNN_tiny", "CNN_small", "CNN_medium", CNN_wide, "resnet_like"]
+    values: ["CNN_small", "CNN_medium", "CNN_wide", "resnet_like"]
 
   hyperparameters.optimizer:
     values: ["adam", "sgd"]
 
   hyperparameters.activation_function:
-    values: ["relu", "tanh", "sigmoid", "leaky_relu"]
+    values: ["relu", "leaky_relu"]   # pruned from 4 → 2 (sigmoid/tanh rarely win)
 
   hyperparameters.max_epochs:
-    values: [10, 20, 30, 50]
+    values: [20, 40]                 # pruned from 5 → 2 (short + long)

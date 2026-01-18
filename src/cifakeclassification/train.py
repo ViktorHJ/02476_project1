@@ -72,16 +72,27 @@ def train(cfg: DictConfig):
         architecture=hp.architecture,
     )
 
-    # FLOPs + params
-    # summary = SummaryUtility(model, max_depth=-1)
-    # wandb.log({"model/FLOPs": summary.total_flops})
-    # wandb.log({"model/num_params": sum(p.numel() for p in model.parameters())})
+    # --- Model complexity logging (clean version) ---
+    num_params = sum(p.numel() for p in model.parameters())
+
+    try:
+        from pytorch_lightning.utilities.model_summary import ModelSummary
+        summary = ModelSummary(model, max_depth=-1)
+        flops = summary.total_flops
+    except Exception:
+        flops = None
+
+    wandb_logger.log_hyperparams({
+        "complexity/params": num_params,
+        "complexity/flops": flops,
+    })
+
 
     # Trainer
     trainer = pl.Trainer(
         max_epochs=hp.max_epochs,
         log_every_n_steps=50,
-        enable_model_summary=True,
+        enable_model_summary=False, # turn off default
         callbacks=[SummaryCallback(max_depth=-1)],
         accelerator="auto",
         devices="auto",
