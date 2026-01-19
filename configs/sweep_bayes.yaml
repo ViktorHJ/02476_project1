@@ -2,6 +2,7 @@ command:
   - python
   - src/cifakeclassification/train.py
   - ${args_no_hyphens}
+
 project: 02476_project1
 entity: vhj-dtu
 method: bayes
@@ -12,26 +13,26 @@ metric:
 
 parameters:
   hyperparameters.learning_rate:
-    distribution: log_uniform_values
+    distribution: log_uniform
     min: 1e-4
     max: 1e-2
 
   hyperparameters.batch_size:
-    values: [128] #32, 64, 128, 256
+    values: [128] # Fixed batch size for Bayesian optimization
 
   hyperparameters.dropout_rate:
     distribution: uniform
-    min: 0.1
-    max: 0.5
+    min: 0.0
+    max: 0.25
 
   hyperparameters.architecture:
-    values: ["CNN_tiny", "CNN_small", "CNN_medium", CNN_wide, "resnet_like"]
+    values: ["CNN_medium", "CNN_medium_deeper", "CNN_wide"]
 
   hyperparameters.optimizer:
-    values: ["adam", "sgd"]
+    values: ["adam"]
 
   hyperparameters.activation_function:
-    values: ["relu", "tanh", "sigmoid", "leaky_relu"]
+    values: ["relu", "tanh", "sigmoid"]
 
   hyperparameters.max_epochs:
-    values: [10, 20, 30, 50]
+    values: [60]
