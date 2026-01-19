@@ -13,13 +13,13 @@ metric:
 
 parameters:
   hyperparameters.learning_rate:
-    values: [0.0003, 0.001, 0.003]   # low, mid, high
+    values: [0.0003, 0.001, 0.003]
 
   hyperparameters.batch_size:
-    values: [128, 256]          
+    values: [128, 256]
 
   hyperparameters.dropout_rate:
-    values: [0.1, 0.3, 0.5]          # light, medium, heavy
+    values: [0.1, 0.3, 0.5]
 
   hyperparameters.architecture:
     values: ["CNN_small", "CNN_medium", "CNN_wide", "resnet_like"]
@@ -28,7 +28,7 @@ parameters:
     values: ["adam", "sgd"]
 
   hyperparameters.activation_function:
-    values: ["relu", "leaky_relu"]   # pruned from 4 → 2 (sigmoid/tanh rarely win)
+    values: ["relu", "leaky_relu"]
 
   hyperparameters.max_epochs:
-    values: [20, 40]                 # pruned from 5 → 2 (short + long)
+    values: [20, 30, 40]
