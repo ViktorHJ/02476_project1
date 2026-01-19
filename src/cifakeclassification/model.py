@@ -74,6 +74,7 @@ class Cifake_CNN(pl.LightningModule):
             "CNN_tiny": [16, 32],
             "CNN_small": [32, 64],
             "CNN_medium": [32, 64, 128],
+            "CNN_big": [32, 64, 128, 256],
             "CNN_wide": [64, 128],
             "resnet_like": [32, 64, 128, "residual"],
         }

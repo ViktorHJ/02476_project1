@@ -11,6 +11,10 @@ metric:
   name: val/loss
   goal: minimize
 
+early_terminate:
+  type: median
+  min_iter: 5 # allow warmup min_samples: 10 # wait for enough runs to compare
+
 parameters:
   hyperparameters.learning_rate:
     distribution: log_uniform_values
@@ -26,7 +30,7 @@ parameters:
     max: 0.25
 
   hyperparameters.architecture:
-    values: ["CNN_medium", "CNN_medium_deeper", "CNN_wide"]
+    values: ["CNN_medium", "CNN_big", "CNN_wide"]
 
   hyperparameters.optimizer:
     values: ["adam"]
