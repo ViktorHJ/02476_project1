@@ -669,25 +669,15 @@ uv sync --dev
 git update-index --skip-worktree .env
 
 # Dependencies so far
-## WSL 2 
+## WSL 2
 sudo apt get unzip
 
-## Unix
+## Data download
+uv run python src/cifakeclassification/data.py download-cifake-datasets
 
-## train()
-uv run train.py \
-  --batch_size=64 \
-  --epochs=5 \
-  --learning_rate=0.001 \
-  --dropout_rate=0.3 \
-  --optimizer=adam \
-  --activation_function=relu \
-  --architecture=Cifake_CNN_small
+## CPU/GPU Build switch, default is cpu
+Unix CUDA Switch to GPU: sed -i 's/pytorch-cpu/pytorch-gpu/g' pyproject.toml && sed -i 's|https://download.pytorch.org/whl/cpu|https://download.pytorch.org/whl/cu124|g' pyproject.toml && rm uv.lock && uv sync
 
-## Mac
-sed -i '' 's/pytorch-gpu/pytorch-cpu/g' pyproject.toml && \
-sed -i '' 's|https://download.pytorch.org/whl/cu124|https://download.pytorch.org/whl/cpu|g' pyproject.toml && \
-rm uv.lock && \
-uv sync
+UNIX / WINDOWS CPU Switch back to CPU: sed -i 's/pytorch-gpu/pytorch-cpu/g' pyproject.toml && sed -i 's|https://download.pytorch.org/whl/cu124|https://download.pytorch.org/whl/cpu|g' pyproject.toml && rm uv.lock && uv sync
 
-
+MAC CPU sed -i '' 's/pytorch-gpu/pytorch-cpu/g' pyproject.toml && sed -i '' 's|https://download.pytorch.org/whl/cu124|https://download.pytorch.org/whl/cpu|g' pyproject.toml && rm uv.lock && uv sync

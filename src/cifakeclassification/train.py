@@ -1,23 +1,45 @@
 from pathlib import Path
 import hydra
 from omegaconf import DictConfig
+
+# 🍦 Vanilla PyTorch
+import torch
+
+# ⚡ PyTorch Lightning
 import pytorch_lightning as pl
+
+# 🏋️‍♀️ Weights & Biases
+import wandb
+from pytorch_lightning.loggers import WandbLogger
+from pytorch_lightning.callbacks import ModelSummary as SummaryCallback
+
+
 from cifakeclassification.model import Cifake_CNN
 from cifakeclassification.data import ImageDataModule
-from pytorch_lightning.loggers import WandbLogger
+
 from dotenv import load_dotenv
-import wandb
 import os
-import sys
 
-sys.argv = [sys.argv[0]] + [a[2:] if a.startswith("--") and "=" in a else a for a in sys.argv[1:]]
-
-
+pl.seed_everything(hash("setting random seeds") % 2**32 - 1)
 load_dotenv()
-CONFIG_DIR = Path(__file__).resolve().parents[2] / "configs"
+
+# Add this here to ensure it is set before the Trainer starts
+torch.set_float32_matmul_precision("medium")
+torch.backends.cudnn.benchmark = True
 
 
-@hydra.main(version_base=None, config_path=str(CONFIG_DIR), config_name="config")
+def auto_precision():
+    # Apple Silicon (M1/M2/M3)
+    if torch.backends.mps.is_available():
+        return "bf16-mixed"  # best supported on macOS
+    # NVIDIA GPU
+    if torch.cuda.is_available():
+        return "16-mixed"
+    # CPU fallback
+    return "32-true"
+
+
+@hydra.main(version_base=None, config_path="../../configs", config_name="config")
 def train(cfg: DictConfig):
     hp = cfg.hyperparameters
 
@@ -33,18 +55,17 @@ def train(cfg: DictConfig):
     )
 
     # Log hyperparameters to W&B
-    wandb_logger.experiment.config.update(
-        {
-            "batch_size": hp.batch_size,
-            "epochs": hp.epochs,
-            "learning_rate": hp.learning_rate,
-            "dropout_rate": hp.dropout_rate,
-            "optimizer": hp.optimizer,
-            "activation_function": hp.activation_function,
-            "architecture": hp.architecture,
-        }
-    )
-    run = wandb_logger.experiment
+    # wandb_logger.experiment.config.update(
+    #     {
+    #         "batch_size": hp.batch_size,
+    #         "max_epochs": hp.max_epochs,
+    #         "learning_rate": hp.learning_rate,
+    #         "dropout_rate": hp.dropout_rate,
+    #         "optimizer": hp.optimizer,
+    #         "activation_function": hp.activation_function,
+    #         "architecture": hp.architecture,
+    #     }
+    # )
 
     # Data
     datamodule = ImageDataModule(
@@ -62,12 +83,33 @@ def train(cfg: DictConfig):
         architecture=hp.architecture,
     )
 
+    # --- Model complexity logging (clean version) ---
+    num_params = sum(p.numel() for p in model.parameters())
+
+    try:
+        from pytorch_lightning.utilities.model_summary import ModelSummary
+
+        summary = ModelSummary(model, max_depth=-1)
+        flops = summary.total_flops
+    except Exception:
+        flops = None
+
+    wandb_logger.log_hyperparams(
+        {
+            "complexity/params": num_params,
+            "complexity/flops": flops,
+        }
+    )
+
     # Trainer
     trainer = pl.Trainer(
-        max_epochs=hp.epochs,
+        max_epochs=hp.max_epochs,
+        log_every_n_steps=50,
+        enable_model_summary=False,
+        callbacks=[SummaryCallback(max_depth=-1)],
         accelerator="auto",
         devices="auto",
-        log_every_n_steps=50,
+        precision=auto_precision(),
         logger=wandb_logger,
     )
 
@@ -75,21 +117,23 @@ def train(cfg: DictConfig):
 
     # Save model
     out_dir = Path(hydra.utils.to_absolute_path("models"))
+    # save_path = "models/model.pth"
     out_dir.mkdir(exist_ok=True)
     save_path = f"{out_dir}/model.ckpt"
     trainer.save_checkpoint(save_path, weights_only=False)
+    # torch.save(model.state_dict(), save_path)
 
     # Log artifact
     artifact = wandb.Artifact("cifake-model", type="model")
     artifact.add_file(save_path)
     wandb_logger.experiment.log_artifact(artifact)
 
-    run_id = run.id
-    run_name = run.name
-    with open("reports/last_run_wandb.txt", "w") as f:
-        f.write("Run name: " + run_name + "\n" + "Run ID: " + run_id)
+    # run_id = run.id
+    # run_name = run.name
+    # with open("reports/last_run_wandb.txt", "w") as f:
+    #     f.write("Run name: " + run_name + "\n" + "Run ID: " + run_id)
 
-    wandb.Api()
+    # wandb.Api()
 
     wandb.finish()
 

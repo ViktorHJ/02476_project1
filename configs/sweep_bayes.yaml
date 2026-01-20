@@ -1,0 +1,42 @@
+command:
+  - python
+  - src/cifakeclassification/train.py
+  - ${args_no_hyphens}
+
+project: 02476_project1
+entity: vhj-dtu
+method: bayes
+
+metric:
+  name: val/loss
+  goal: minimize
+
+early_terminate:
+  type: median
+  min_iter: 5 # allow warmup min_samples: 10 # wait for enough runs to compare
+
+parameters:
+  hyperparameters.learning_rate:
+    distribution: log_uniform_values
+    min: 1e-4
+    max: 1e-2
+
+  hyperparameters.batch_size:
+    values: [128] # Fixed batch size for Bayesian optimization
+
+  hyperparameters.dropout_rate:
+    distribution: uniform
+    min: 0.0
+    max: 0.25
+
+  hyperparameters.architecture:
+    values: ["CNN_medium", "CNN_big", "CNN_wide"]
+
+  hyperparameters.optimizer:
+    values: ["adam"]
+
+  hyperparameters.activation_function:
+    values: ["relu"]
+
+  hyperparameters.max_epochs:
+    values: [70]

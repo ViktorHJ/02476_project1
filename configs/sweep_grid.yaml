@@ -1,0 +1,34 @@
+command:
+  - python
+  - src/cifakeclassification/train.py
+  - ${args_no_hyphens}
+
+project: 02476_project1
+entity: vhj-dtu
+method: grid
+
+metric:
+  name: val/loss
+  goal: minimize
+
+parameters:
+  hyperparameters.learning_rate:
+    values: [0.0003, 0.001, 0.003]
+
+  hyperparameters.batch_size:
+    values: [128, 256]
+
+  hyperparameters.dropout_rate:
+    values: [0.1, 0.3, 0.5]
+
+  hyperparameters.architecture:
+    values: ["CNN_small", "CNN_medium", "CNN_wide", "resnet_like"]
+
+  hyperparameters.optimizer:
+    values: ["adam", "sgd"]
+
+  hyperparameters.activation_function:
+    values: ["relu", "leaky_relu"]
+
+  hyperparameters.max_epochs:
+    values: [20, 30, 40]
