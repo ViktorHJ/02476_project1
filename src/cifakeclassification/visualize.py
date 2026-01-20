@@ -6,12 +6,12 @@ import typer
 from dotenv import load_dotenv
 
 import matplotlib
-
-matplotlib.use("Agg")
-
 import wandb
 import matplotlib.pyplot as plt
 import pandas as pd
+
+matplotlib.use("Agg")
+
 
 load_dotenv()
 app = typer.Typer()
