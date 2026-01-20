@@ -27,6 +27,16 @@ load_dotenv()
 torch.set_float32_matmul_precision("medium")
 torch.backends.cudnn.benchmark = True
 
+def auto_precision():
+    # Apple Silicon (M1/M2/M3)
+    if torch.backends.mps.is_available():
+        return "bf16-mixed"   # best supported on macOS
+    # NVIDIA GPU
+    if torch.cuda.is_available():
+        return "16-mixed"
+    # CPU fallback
+    return "32-true"
+
 
 @hydra.main(version_base=None, config_path="../../configs", config_name="config")
 def train(cfg: DictConfig):
@@ -98,7 +108,7 @@ def train(cfg: DictConfig):
         callbacks=[SummaryCallback(max_depth=-1)],
         accelerator="auto",
         devices="auto",
-        precision="16-mixed",  # safe: ignored on CPU
+        precision=auto_precision(),
         logger=wandb_logger,
     )
 

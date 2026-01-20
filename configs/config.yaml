@@ -10,3 +10,5 @@ hyperparameters:
   batch_size: 512
   max_epochs: 2
   architecture: 'CNN_tiny'
+
+precision: null

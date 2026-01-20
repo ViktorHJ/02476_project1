@@ -36,7 +36,7 @@ parameters:
     values: ["adam"]
 
   hyperparameters.activation_function:
-    values: ["relu", "tanh", "sigmoid"]
+    values: ["relu"]
 
   hyperparameters.max_epochs:
-    values: [60]
+    values: [70]
