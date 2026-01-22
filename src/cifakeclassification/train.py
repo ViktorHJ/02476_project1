@@ -20,6 +20,9 @@ from cifakeclassification.data import ImageDataModule
 from dotenv import load_dotenv
 import os
 
+CONFIG_DIR = Path(__file__).resolve().parents[2] / "configs"
+
+
 pl.seed_everything(hash("setting random seeds") % 2**32 - 1)
 load_dotenv()
 
@@ -39,7 +42,7 @@ def auto_precision():
     return "32-true"
 
 
-@hydra.main(version_base=None, config_path="../../configs", config_name="config")
+@hydra.main(version_base=None, config_path=str(CONFIG_DIR), config_name="config")
 def train(cfg: DictConfig):
     hp = cfg.hyperparameters
 
