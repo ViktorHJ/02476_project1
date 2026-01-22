@@ -4,6 +4,27 @@ from torch.utils.data import Dataset, DataLoader
 from cifakeclassification.data import create_data_module, ImageDataModule
 
 
+def test_dataset():
+    """Test dataset properties."""
+    datamodule = create_data_module("data", val_split=0.2)
+    datamodule.setup()
+
+    assert datamodule.num_classes == 2
+    assert datamodule.classes == ["FAKE", "REAL"]
+
+    val_size = int(100_000 * datamodule.val_split)
+
+    assert len(datamodule.train_dataset) == 100_000 - val_size
+    assert len(datamodule.val_dataset) == val_size
+    assert len(datamodule.test_dataset) == 20000
+
+    for img, label in datamodule.train_dataset:
+        assert isinstance(img, torch.Tensor)
+        assert img.shape == (3, 32, 32)
+        assert label in [0, 1]
+        break
+
+
 def test_class_init():
     """Test the ImageDataModule class."""
     datamodule = create_data_module("data")
@@ -16,18 +37,9 @@ def test_pt_lightning_setup():
     datamodule = create_data_module("data", val_split=0.2)
     datamodule.setup()
 
-    assert datamodule.num_classes == 2
-    assert datamodule.classes == ["FAKE", "REAL"]
-
     assert isinstance(datamodule.train_dataset, Dataset)
     assert isinstance(datamodule.val_dataset, Dataset)
     assert isinstance(datamodule.test_dataset, Dataset)
-
-    val_size = int(100_000 * datamodule.val_split)
-
-    assert len(datamodule.train_dataset) == 100_000 - val_size
-    assert len(datamodule.val_dataset) == val_size
-    assert len(datamodule.test_dataset) == 20000
 
 
 def test_dataloaders():

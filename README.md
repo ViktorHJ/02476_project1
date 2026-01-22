@@ -673,7 +673,7 @@ git update-index --skip-worktree .env
 sudo apt get unzip
 
 ## Data download
-uv run python src/cifakeclassification/data.py download-cifake-datasets
+uv run data download
 
 ## CPU/GPU Build switch, default is cpu
 Unix CUDA Switch to GPU: sed -i 's/pytorch-cpu/pytorch-gpu/g' pyproject.toml && sed -i 's|https://download.pytorch.org/whl/cpu|https://download.pytorch.org/whl/cu124|g' pyproject.toml && rm uv.lock && uv sync

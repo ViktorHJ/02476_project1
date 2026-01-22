@@ -18,7 +18,7 @@ app = typer.Typer()
 
 
 @app.command()
-def visualize_train_from_wandb(
+def visualize_training_metrics_from_wandb_run(
     run_name: Annotated[str, typer.Argument(help="The name of the W&B run")],
     output_dir: Annotated[str, typer.Option(help="Where to save figures")] = "reports/figures",
 ):
@@ -70,8 +70,8 @@ def visualize_train_from_wandb(
 
 
 @app.command()
-def visualize_eval():
-    pass
+def help():
+    typer.echo("Use 'visualize-training-metrics-from-wandb-run' command to visualize metrics.")
 
 
 if __name__ == "__main__":
