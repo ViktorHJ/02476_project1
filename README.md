@@ -681,12 +681,17 @@ sudo apt get unzip
 uv run data download
 
 ### CPU/GPU Build switch, default is cpu
+If you want to run in the native OS (ouside docker) These commands switch the .toml file since UV does not support conditinal images.
+If you are not running a CUDA gpu the default is already set.
+```
 Unix CUDA Switch to GPU: sed -i 's/pytorch-cpu/pytorch-gpu/g' pyproject.toml && sed -i 's|https://download.pytorch.org/whl/cpu|https://download.pytorch.org/whl/cu124|g' pyproject.toml && rm uv.lock && uv sync
-
+```
+```
 UNIX / WINDOWS CPU Switch back to CPU: sed -i 's/pytorch-gpu/pytorch-cpu/g' pyproject.toml && sed -i 's|https://download.pytorch.org/whl/cu124|https://download.pytorch.org/whl/cpu|g' pyproject.toml && rm uv.lock && uv sync
-
+```
+```
 MAC CPU sed -i '' 's/pytorch-gpu/pytorch-cpu/g' pyproject.toml && sed -i '' 's|https://download.pytorch.org/whl/cu124|https://download.pytorch.org/whl/cpu|g' pyproject.toml && rm uv.lock && uv sync
-
+```
 ## API
 ### Monitor API metrics
 http://localhost:8000/metrics/
@@ -715,10 +720,10 @@ then in the shell you can run uv commands as normal
 uv run data download
 ```
 ```
-wandb login
+uv run wandb login
 ```
 ```
-wandb login --relogin
+uv run wandb login --relogin
 ```
 ```
 uv run train
@@ -747,19 +752,12 @@ docker run --rm -p 8000:8000 cifake-api
 ```
 ### GPU build (Linux with NVIDIA)
 ```
+sed -i 's/pytorch-cpu/pytorch-gpu/g' pyproject.toml && sed -i 's|https://download.pytorch.org/whl/cpu|https://download.pytorch.org/whl/cu124|g' pyproject.toml && rm uv.lock && uv sync
+```
+```
 docker build -f dockerfiles/train_cuda.dockerfile -t train-gpu .
 ```
 ```
+docker run -it --ipc=host --gpus all --entrypoint sh train-gpu
 ```
-
-
-
-
-
-
-
-
-
-
-
-
+From here its the same as above, enjoy the shell (:
