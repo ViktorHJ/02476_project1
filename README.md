@@ -709,21 +709,45 @@ wandb sweep configs/sweep_grid.yaml
 wandb sweep configs/sweep_bayes.yaml
 wandb agent <sweep-id>
 ```
-### CPU build (Mac, Windows, Linux)
+### CPU build
 ```
 docker build -f dockerfiles/train.dockerfile -t train-cpu .
-
+```
+```
 docker run --rm -v $(pwd)/data:/app/data train-cpu data download
-
+```
+```
 docker run --rm \
   --ipc=host \
   -v $(pwd)/data:/app/data \
   -e WANDB_MODE=offline \
   train-cpu train
-
-
-docker run --rm train-cpu # Some script
-docker run -it --entrypoint sh train-cpu
+```
+For a shell enviroment instead of runing commands like that, instead run:
+```
+docker run -it --ipc=host --entrypoint sh train-cpu
+```
+then in the shell you can run uv commands as normal
+```
+uv run data download
+```
+```
+wandb login
+```
+```
+wandb login --relogin
+```
+```
+uv run train
+```
+```
+uv run wandb sweep configs/sweep_bayes.yaml
+```
+```
+uv run wandb sweep configs/sweep_grid.yaml
+```
+```
+uv run wandb agent vhj-dtu/02476_project1/ [Some sweep id]
 ```
 ### GPU build (Linux with NVIDIA)
 ```
@@ -739,4 +763,5 @@ docker run --gpus all train-gpu # Some script
 docker build -f dockerfiles/api.dockerfile -t cifake-api .
 docker run --rm -p 8000:8000 cifake-api
 ```
+
 
