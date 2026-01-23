@@ -744,6 +744,7 @@ uv run evaluate
 ```
 ```
 uv run visualize visualize-training-metrics-from-wandb-run <wandb run name>
+```
 ## Docker API
 ```
 docker build -f dockerfiles/api.dockerfile -t cifake-api .
@@ -760,6 +761,7 @@ docker build \
 
 docker run --gpus all train-gpu # Some script
 ```
+
 
 
 
