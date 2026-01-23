@@ -205,7 +205,7 @@ s224819, s224167, s224199
 >
 > Answer:
 
-We did not end up using any frameworks or packages that were not covered in the course. 
+We did not end up using any frameworks or packages that were not covered in the course.
 
 ## Coding environment
 
@@ -256,7 +256,7 @@ We started out with the basic cookiecutter template, that contained (somewhat) e
 >
 > Answer:
 
-We used `ruff` for linting and formatting. We also used typing in our code for some classes and functions, but not all. 
+We used `ruff` for linting and formatting. We also used typing in our code for some classes and functions, but not all.
 These concepts are important when working in larger projects, due to different reasons:
 - Linting and formatting simply makes the code more readable, and ensures consistensy across all files. It ensures an industry standard for how the code should look like.
 - Typing makes it easier to understand what type of data is being passed into functions and classes, which makes it easier to understand the code, as well as making it easier to debug.
@@ -341,7 +341,7 @@ We did not make use of DVC in our project. However, it would have been beneficia
 >
 > Answer:
 
-For our continuous integration, we used two different methods: pre-commits and GitHub actions. 
+For our continuous integration, we used two different methods: pre-commits and GitHub actions.
 - For pre-commits, we used `ruff` which would automatically check the code for any linting errors or formatting issues before allowing us to commit, ensuring that the code always followed the PEP8 guidelines. Furthermore, we also made sure all our tests were passing before allowing a commit, using pytest. Finally, we made use of githubs own hooks that did minor checks on stuff like trailing whitespace, end-of-file newlines, correct yaml formatting etc. This was all to make sure that the committed product was readable.
 - For GitHub actions, we had three different workflows: one for linting, which more or less does the same as the pre-commit, but now on the remote repository. The second workflow was for running our tests, where a docker image was built, and then the tests were run inside the docker container, to ensure that the code would also work in a docker-environment. The third workflow was a standard pre-commit-update workflow, that would automatically update our pre-commit hooks every day. We also had a dependabot setup, that would check for outdated dependencies every week, and create pull requests for updating them. We did not make use of caching(?)
 
@@ -362,7 +362,7 @@ For our continuous integration, we used two different methods: pre-commits and G
 >
 > Answer:
 
-We used Hydra for configuring our experiments. This allowed us to create configuration files in yaml-format, where we could specify hyperparameters and other settings for our experiments. For an example, in our `evaluation.py` file, we use the code snippet: `@hydra.main(version_base=None, config_path=str(CONFIG_DIR), config_name="evaluation_config")`to load in the configuration file called `evaluation_config.yaml` from the configs-folder. This file contains all the hyperparameters for our evaluation script. 
+We used Hydra for configuring our experiments. This allowed us to create configuration files in yaml-format, where we could specify hyperparameters and other settings for our experiments. For an example, in our `evaluation.py` file, we use the code snippet: `@hydra.main(version_base=None, config_path=str(CONFIG_DIR), config_name="evaluation_config")`to load in the configuration file called `evaluation_config.yaml` from the configs-folder. This file contains all the hyperparameters for our evaluation script.
 
 
 ### Question 13
@@ -517,7 +517,7 @@ We train our models locally, as they are very small models (less than a megabyte
 >
 > Answer:
 
-We used FastAPI to write an API for our model. It loads in a local model-checkpoint and, using a predict function, the user can then request the model's prediction on a given image.
+We used FastAPI to write an API for our model. It loads in a local model-checkpoint and, using a predict function, the user can then request the model's prediction on a given image. If the train function has been run, then the model-checkpoint will automatically be there. The command for starting the api inside or out of a docker container, along with how to use it is described in the code dokumentation, but in general it follows the fastapi structure as described in module M22.
 
 ### Question 24
 
@@ -533,7 +533,8 @@ We used FastAPI to write an API for our model. It loads in a local model-checkpo
 >
 > Answer:
 
---- question 24 fill here ---
+We deployed our model locally, which worked, but we never got to deploy it in the cloud. With more time to develop this api, we would definately have worked on deploying the api in the cloud. To invoke the predict function of the application using the API, the user would call this command:
+*`curl -X POST "http://127.0.0.1:8000/predict/" -F 'data=@"<path-to-image>"'`*
 
 ### Question 25
 
@@ -563,7 +564,7 @@ We used FastAPI to write an API for our model. It loads in a local model-checkpo
 >
 > Answer:
 
---- question 26 fill here ---
+We implemented local system monitoring of the some api metrics, namely a counter for the errors, a counter for the total requests and a histogram for the latency of the predict method. If we had more time for development, and we had deployed our API in the cloud, then we would have done cloud system monitoring, which would have allowed us to implement an alert system, which would alert the host of the api, when the named metrics started giving bad responses.
 
 ## Overall discussion of project
 
@@ -582,7 +583,7 @@ We used FastAPI to write an API for our model. It loads in a local model-checkpo
 >
 > Answer:
 
-We never used GCP, as we merely used W&B to store both training metrics, trained models and evaluation metrics.
+We never used GCP, as we merely used W&B to store both training metrics, trained models and evaluation metrics. This naturally means that we did not spend any credits. In general, working in the cloud takes some getting used to, in terms of the setup, and can be a bit time-consuming the first time, which is why we did not do it for this project, as we had other things to implement, which we deemed were more critical for our application. Furthermore, we did not have a problem in terms of computing power, as our model is very small and the dataset is small aswell. This eliminated the typical reason why people work in the cloud. One element of working in the cloud, is the ability to deploy models in the cloud, which is definitely something we would have done with more time for development.
 
 ### Question 28
 
@@ -757,7 +758,7 @@ docker build -f dockerfiles/api.dockerfile -t cifake-api .
 ```
 docker run --rm -p 8000:8000 cifake-api
 ```
-Then on the host pc connect to the sever and input some 3x32x32 image, for example data/test/FAKE/0 (2).jpg 
+Then on the host pc connect to the sever and input some 3x32x32 image, for example data/test/FAKE/0 (2).jpg
 ```
 curl -X POST http://127.0.0.1:8000/predict/ -F "data=@data/test/FAKE/0 (2).jpg"
 ```
@@ -772,4 +773,3 @@ docker build -f dockerfiles/train_cuda.dockerfile -t train-gpu .
 docker run -it --ipc=host --gpus all --entrypoint sh train-gpu
 ```
 From here its the same as above, enjoy the shell (:
-
