@@ -232,7 +232,7 @@ def test_harness(device="cpu", batch_size=32, architecture="CNN_tiny"):
     except Exception:
         print("FLOPs estimation unavailable.")
 
-    print("\n✅ Model tests completed.\n")
+    print("\n Model tests completed.\n")
 
 
 # ---------------------------------------------------------------------------
