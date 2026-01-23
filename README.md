@@ -610,7 +610,7 @@ We never used GCP, as we merely used W&B to store both training metrics, trained
 > **Include a figure that describes the overall architecture of your system and what services that you make use of.**
 > **You can take inspiration from [this figure](figures/overview.png). Additionally, in your own words, explain the**
 > **overall steps in figure.**
->
+>![alt text](q29.png)
 > Recommended answer length: 200-400 words
 >
 > Example:
@@ -811,3 +811,4 @@ docker build -f dockerfiles/train_cuda.dockerfile -t train-gpu .
 docker run -it --ipc=host --gpus all --entrypoint sh train-gpu
 ```
 From here its the same as above, enjoy the shell (:
+
