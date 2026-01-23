@@ -179,7 +179,7 @@ will check the repositories and the code to verify your answers.
 >
 > Answer:
 
---- question 1 fill here ---
+52
 
 ### Question 2
 > **Enter the study number for each member in the group**
@@ -190,13 +190,14 @@ will check the repositories and the code to verify your answers.
 >
 > Answer:
 
---- question 2 fill here ---
+s224819, s224167, s224199
+
 
 ### Question 3
-> **A requirement to the project is that you include a third-party package not covered in the course. What framework**
-> **did you choose to work with and did it help you complete the project?**
+> **Did you end up using any open-source frameworks/packages not covered in the course during your project? If so**
+> **which did you use and how did they help you complete the project?**
 >
-> Recommended answer length: 100-200 words.
+> Recommended answer length: 0-200 words.
 >
 > Example:
 > *We used the third-party framework ... in our project. We used functionality ... and functionality ... from the*
