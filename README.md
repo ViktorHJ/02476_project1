@@ -415,7 +415,13 @@ In the second image, we can see the validation loss of several different runs. W
 >
 > Answer:
 
+We used docker to create an option for hosting the api using docker (api.dockerfile), and an option for running the training, evaluating and visualizing in docker using both cpu and cude with (train.dockerfile) (train_cuda.dockerfile).
 
+To create a docker image, run this:
+*`docker build -f dockerfiles/train.dockerfile -t train-cpu .`*
+And then to run it, use this:
+docker run -it --ipc=host -v "$(pwd)/reports:/app/reports" --entrypoint sh train-cpu
+We have not worked with cloud deployment, so we cannot link to a docker file on the web
 
 ### Question 16
 
@@ -430,7 +436,7 @@ In the second image, we can see the validation loss of several different runs. W
 >
 > Answer:
 
-We largely used generative AI tools like ChatGPT and GitHub Copilot to help us debug our code. If we could not understand the error message, we would simply copy-paste it into ChatGPT, and it would often be able to give us a good explanation of what the error meant, and how to fix it. 
+We largely used generative AI tools like ChatGPT and GitHub Copilot to help us debug our code. If we could not understand the error message, we would simply copy-paste it into ChatGPT, and it would often be able to give us a good explanation of what the error meant, and how to fix it.
 
 ## Working in the cloud
 
@@ -814,4 +820,3 @@ docker build -f dockerfiles/train_cuda.dockerfile -t train-gpu .
 docker run -it --ipc=host -v "$(pwd)/reports:/app/reports" --gpus all --entrypoint sh train-gpu
 ```
 From here its the same as above, enjoy the shell (:
-
