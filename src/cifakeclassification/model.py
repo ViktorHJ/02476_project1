@@ -16,7 +16,7 @@ import pytorch_lightning as pl
 # ---------------------------------------------------------------------------
 # Building blocks for CNN architectures
 # ---------------------------------------------------------------------------
-def conv_block(in_ch, out_ch, activation_cls, use_bn=True, pool=True):
+def conv_block(in_ch: int, out_ch: int, activation_cls, use_bn=True, pool=True):
     """Standard Conv → BN → Activation → Optional MaxPool block."""
     layers = [nn.Conv2d(in_ch, out_ch, kernel_size=3, padding=1, bias=not use_bn)]
     if use_bn:
@@ -71,7 +71,7 @@ class Cifake_CNN(pl.LightningModule):
 
     def __init__(
         self,
-        num_classes=2,
+        num_classes: int = 2,
         learning_rate: float = 1e-3,
         dropout_rate: float = 0.3,
         optimizer: str = "adam",
