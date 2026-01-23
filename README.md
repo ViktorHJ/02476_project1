@@ -695,6 +695,8 @@ curl -X POST "http://127.0.0.1:8000/predict/" \
 
   -F 'data=@"data/test/FAKE/0 (2).jpg"'
 
+data/test/FAKE/0 (2).jpg is just the path to an example image. This path should merely lead to a 3x32x32 image
+
 # Docker build and run
 ## Docker train
 ## Scripts:
@@ -702,7 +704,7 @@ curl -X POST "http://127.0.0.1:8000/predict/" \
 data download
 train
 evaluate
-visualize
+visualize visualize-training-metrics-from-wandb-run <run-name>
 wandb sweep configs/sweep_grid.yaml
 wandb sweep configs/sweep_bayes.yaml
 wandb agent <sweep-id>
