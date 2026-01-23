@@ -477,14 +477,17 @@ In the second image, we can see the validation loss of several different runs. W
 <blockquote>
 <p><strong>Include a figure that describes the overall architecture of your system and what services that you make use of.</strong>
 <strong>You can take inspiration from <a href="figures/overview.png">this figure</a>. Additionally, in your own words, explain the</strong>
-<strong>overall steps in figure.</strong>
-<img alt="alt text" src="q29.png" />
-Recommended answer length: 200-400 words</p>
+<strong>overall steps in figure.</strong></p>
+<p>Recommended answer length: 200-400 words</p>
 <p>Example:</p>
 <p><em>The starting point of the diagram is our local setup, where we integrated ... and ... and ... into our code.</em>
 <em>Whenever we commit code and push to GitHub, it auto triggers ... and ... . From there the diagram shows ...</em></p>
 <p>Answer:</p>
+<p><img alt="alt text" src="q29.png" />
+This diagram outlines a repreducable streamlined machine learning workflow. The begininig is the download of a Kaggle data-set source, on that dataset we run training with Hydra and W&amp;B for configuration and experiment tracking. These feed into PyTorch Lightning for model training. Pytorch lightning is in charge of scaling across devices and platforms. </p>
 </blockquote>
+<p>Models and tools are accessed via a Terminal Interface, or via a CLI interface with Typer enabling command-line interaction. Trained models are served through a FastAPI. The entire system runs either naitivly in Unix/WSL or inside Docker containers for reproducibility and scalability.</p>
+<p>Developers and users interact by building docker containers, accessing APIs. We manage secrets in the DEV environment using python-dotenv. The naitive pipeline is very performant. Code is hosted on GitHub, with GitHub Actions automating testing and alerts during development.</p>
 <h3>Question 30</h3>
 <blockquote>
 <p><strong>Discuss the overall struggles of the project. Where did you spend most time and what did you do to overcome these</strong>
@@ -520,6 +523,7 @@ Else the only dependency is docker.</p>
 <p>for native execution simply run
 <code>uv sync</code>
 and then all scripts are accessible from root.
+Unzip may not be installed with WSL/Unix, it is a requiment to get it 
 <code>uv run data download</code></p>
 <h2>Help</h2>
 <p>If you need documentation on a module or class they can be accessed as follows:</p>
