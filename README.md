@@ -617,7 +617,7 @@ We implemented functionality for the docker containers to be run on a local gpu 
 > **Include a figure that describes the overall architecture of your system and what services that you make use of.**
 > **You can take inspiration from [this figure](figures/overview.png). Additionally, in your own words, explain the**
 > **overall steps in figure.**
->![alt text](q29.png)
+>
 > Recommended answer length: 200-400 words
 >
 > Example:
@@ -626,6 +626,13 @@ We implemented functionality for the docker containers to be run on a local gpu 
 > *Whenever we commit code and push to GitHub, it auto triggers ... and ... . From there the diagram shows ...*
 >
 > Answer:
+>
+![alt text](q29.png)
+This diagram outlines a repreducable streamlined machine learning workflow. The begininig is the download of a Kaggle data-set source, on that dataset we run training with Hydra and W&B for configuration and experiment tracking. These feed into PyTorch Lightning for model training. Pytorch lightning is in charge of scaling across devices and platforms.
+
+Models and tools are accessed via a Terminal Interface, or via a CLI interface with Typer enabling command-line interaction. Trained models are served through a FastAPI. The entire system runs either naitivly in Unix/WSL or inside Docker containers for reproducibility and scalability.
+
+Developers and users interact by building docker containers, accessing APIs. We manage secrets in the DEV environment using python-dotenv. The naitive pipeline is very performant. Code is hosted on GitHub, with GitHub Actions automating testing and alerts during development.
 
 
 
@@ -679,6 +686,7 @@ for native execution simply run
 uv sync
 ```
 and then all scripts are accessible from root.
+Unzip may not be installed with WSL/Unix, it is a requiment to get it
 ```
 uv run data download
 ```
