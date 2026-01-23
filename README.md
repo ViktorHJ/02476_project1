@@ -699,16 +699,6 @@ data/test/FAKE/0 (2).jpg is just the path to an example image. This path should 
 
 # Docker build and run
 ## Docker train
-## Scripts:
-```
-data download
-train
-evaluate
-visualize visualize-training-metrics-from-wandb-run <run-name>
-wandb sweep configs/sweep_grid.yaml
-wandb sweep configs/sweep_bayes.yaml
-wandb agent <sweep-id>
-```
 ### CPU build
 ```
 docker build -f dockerfiles/train.dockerfile -t train-cpu .
@@ -765,6 +755,7 @@ docker build \
 
 docker run --gpus all train-gpu # Some script
 ```
+
 
 
 
