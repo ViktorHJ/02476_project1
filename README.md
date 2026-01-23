@@ -749,6 +749,13 @@ uv run wandb sweep configs/sweep_grid.yaml
 ```
 uv run wandb agent vhj-dtu/02476_project1/ [Some sweep id]
 ```
+## Docker API
+```
+docker build -f dockerfiles/api.dockerfile -t cifake-api .
+```
+```
+docker run --rm -p 8000:8000 cifake-api
+```
 ### GPU build (Linux with NVIDIA)
 ```
 docker build \
@@ -758,10 +765,7 @@ docker build \
 
 docker run --gpus all train-gpu # Some script
 ```
-## Docker API
-```
-docker build -f dockerfiles/api.dockerfile -t cifake-api .
-docker run --rm -p 8000:8000 cifake-api
-```
+
+
 
 
