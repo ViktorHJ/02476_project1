@@ -69,5 +69,7 @@ jobs:
 
       - name: Run tests inside container
         run: |
-          docker run --rm cifake-tests sh -lc \
-            "uv run coverage erase && uv run coverage run -m pytest tests/ && uv run coverage report -m"
+          docker run --rm \
+            --entrypoint sh \
+            cifake-tests \
+            -lc "uv run coverage erase && uv run coverage run -m pytest tests/ && uv run coverage report -m"
