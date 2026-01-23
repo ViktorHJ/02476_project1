@@ -362,7 +362,8 @@ For our continuous integration, we used two different methods: pre-commits and G
 >
 > Answer:
 
---- question 12 fill here ---
+We used Hydra for configuring our experiments. This allowed us to create configuration files in yaml-format, where we could specify hyperparameters and other settings for our experiments. For an example, in our `evaluation.py` file, we use the code snippet: `@hydra.main(version_base=None, config_path=str(CONFIG_DIR), config_name="evaluation_config")`to load in the configuration file called `evaluation_config.yaml` from the configs-folder. This file contains all the hyperparameters for our evaluation script. 
+
 
 ### Question 13
 
