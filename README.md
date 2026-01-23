@@ -683,3 +683,9 @@ UNIX / WINDOWS CPU Switch back to CPU: sed -i 's/pytorch-gpu/pytorch-cpu/g' pypr
 MAC CPU sed -i '' 's/pytorch-gpu/pytorch-cpu/g' pyproject.toml && sed -i '' 's|https://download.pytorch.org/whl/cu124|https://download.pytorch.org/whl/cpu|g' pyproject.toml && rm uv.lock && uv sync
 
 
+## To start API:
+uv run uvicorn cifakeclassification.api:app --port 8000 --app-dir src
+
+## To test:
+curl -X POST "http://127.0.0.1:8000/predict/" \
+  -F 'data=@"data/test/FAKE/0 (2).jpg"'
