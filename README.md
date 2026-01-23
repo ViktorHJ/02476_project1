@@ -435,7 +435,7 @@ s224819, s224167, s224199
 >
 > Answer:
 
-We never used any GCP service, as our model is very small in memory and our data can be loaded in from kaggle in very short time. To store the model and training metrics, we both stored models in W&B and when evaluating a model in our evaluate.py script, we needed a model checkpoint to be saved locally. This eliminated any direct need for using GCP services, although in hindsight, being more consistent in how the models were accessed and stored would have likely made the application easier to set up at the end of the development phase, as we would not need the user to be able to access W&B, simply for loading in a model to make predictions with.
+We never used any GCP service, as our model is very small in memory and our data can be loaded in from kaggle in very short time. We stored the model parameters locally and the model architecture and training metrics we stored seperately on W&B. This eliminated any direct need for using GCP services, although in hindsight, using GCP for storing the model would have likely made the application easier to set up at the end of the development phase, as we would not need the user to be able to access a locally stored model, in order to use it, but instead we could have run the API using a model stored using GCP.
 
 ### Question 18
 
@@ -450,7 +450,7 @@ We never used any GCP service, as our model is very small in memory and our data
 >
 > Answer:
 
-As mentioned, we did not use any GCP service. The compute engine would have been to rent a VM from google, where we could request more computing power than we have access to on our local machines. However, for our model, we had plenty of computing power on our local machines to train it. The process could probably still have been speed up if we used a VM for google.
+As mentioned, we did not use any GCP service. The compute engine would have been to rent a VM from google, where we could request more computing power than we have access to on our local machines. However, for our model, we had plenty of computing power on our local machines to train it. The process could probably still have been optimized further for training time if we used a VM from google.
 
 ### Question 19
 
@@ -492,7 +492,7 @@ As mentioned, we did not use any GCP service. The compute engine would have been
 >
 > Answer:
 
---- question 22 fill here ---
+We train our models locally, as they are very small models (less than a megabyte), and they don't take very long to train at all. This could have changed, if the model's were set to train for more epochs. Further, it could have been relevant when running sweeps for learning the optimal hyperparameters, as that requires training lots of models. This never really became an issue in our project, and that is why we never decided to do model-training in the cloud. However, after training a model, its model-checkpoint was saved both locally, and in the cloud on W&B. Saving it in the cloud on W&B allowed us to download past trained models.
 
 ## Deployment
 
@@ -509,7 +509,7 @@ As mentioned, we did not use any GCP service. The compute engine would have been
 >
 > Answer:
 
---- question 23 fill here ---
+We used FastAPI to write an API for our model. It loads in a local model-checkpoint and, using a predict function, the user can then request the model's prediction on a given image.
 
 ### Question 24
 
