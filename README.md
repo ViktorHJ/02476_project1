@@ -396,6 +396,7 @@ As previously mentioned, we used Hydra for configuring our experiments. This all
 > Answer:
 
 ![alt text](q14_1.png)
+![alt text](q14_2.png)
 
 ### Question 15
 
