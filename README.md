@@ -159,8 +159,8 @@ will check the repositories and the code to verify your answers.
 * [ ] Instrument your API with a couple of system metrics (M28)
 * [ ] Setup cloud monitoring of your instrumented application (M28)
 * [ ] Create one or more alert systems in GCP to alert you if your app is not behaving correctly (M28)
-* [o] If applicable, optimize the performance of your data loading using distributed data loading (M29)
-* [o] If applicable, optimize the performance of your training pipeline by using distributed training (M30)
+* [x] If applicable, optimize the performance of your data loading using distributed data loading (M29)
+* [x] If applicable, optimize the performance of your training pipeline by using distributed training (M30)
 * [o] Play around with quantization, compilation and pruning for you trained models to increase inference speed (M31)
 
 ### Extra
@@ -681,4 +681,5 @@ Unix CUDA Switch to GPU: sed -i 's/pytorch-cpu/pytorch-gpu/g' pyproject.toml && 
 UNIX / WINDOWS CPU Switch back to CPU: sed -i 's/pytorch-gpu/pytorch-cpu/g' pyproject.toml && sed -i 's|https://download.pytorch.org/whl/cu124|https://download.pytorch.org/whl/cpu|g' pyproject.toml && rm uv.lock && uv sync
 
 MAC CPU sed -i '' 's/pytorch-gpu/pytorch-cpu/g' pyproject.toml && sed -i '' 's|https://download.pytorch.org/whl/cu124|https://download.pytorch.org/whl/cpu|g' pyproject.toml && rm uv.lock && uv sync
+
 
