@@ -1,7 +1,11 @@
 from pathlib import Path
 import wandb
+import os
 
-run = wandb.init(project="02476_project1", entity="vhj-dtu", job_type="inference")
+
+entity = os.getenv("WANDB_ENTITY")
+project = os.getenv("WANDB_PROJECT")
+run = wandb.init(project=project, entity=entity, job_type="inference")
 
 artifact = run.use_artifact("vhj-dtu/02476_project1/model-0qmzh7ah:v0", type="model")
 artifact_dir = Path(artifact.download(root="./models/"))
