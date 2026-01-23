@@ -429,7 +429,7 @@ In the second image, we can see the validation loss of several different runs. W
 >
 > Answer:
 
---- question 16 fill here ---
+We largely used generative AI tools like ChatGPT and GitHub Copilot to help us debug our code. If we could not understand the error message, we would simply copy-paste it into ChatGPT, and it would often be able to give us a good explanation of what the error meant, and how to fix it. 
 
 ## Working in the cloud
 
