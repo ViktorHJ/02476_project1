@@ -134,7 +134,7 @@ will check the repositories and the code to verify your answers.
 ### Week 2
 
 * [x] Write unit tests related to the data part of your code (M16)
-* [t] Write unit tests related to model construction and or model training (M16)
+* [x] Write unit tests related to model construction and or model training (M16)
 * [x] Calculate the code coverage (M16)
 * [x] Get some continuous integration running on the GitHub repository (M17)
 * [m] Add caching and multi-os/python/pytorch testing to your continuous integration (M17)
@@ -279,7 +279,7 @@ These concepts are important when working in larger projects, due to different r
 >
 > Answer:
 
-In total, we implemented 7 tests. 4 of these tests were for the data loading part of our code, ensuring that the data was being loaded correctly, and that the transformations were being applied as intended. 2 of these tests were for the API, one to test the health endpoint, and one to test the inference endpoint. Finally... (IKKE FÆRDIG HER)
+In total, we implemented 7 tests. 4 of these tests were for the data loading part of our code, ensuring that the data was being loaded correctly, and that the transformations were being applied as intended. 2 of these tests were for the API, one to test the health endpoint, and one to test the inference endpoint. The last test was for the model, where we tested the forward pass of the model, to ensure that the model was producing outputs of the correct shape.
 
 ### Question 8
 
@@ -294,7 +294,7 @@ In total, we implemented 7 tests. 4 of these tests were for the data loading par
 >
 > Answer:
 
-Our total code coverage is 62%; 85% of the api-code is covered, 70% of the data and 43% of the model code. Even if we had a code coverage of 100%, we would not trust the code to be error free. The reason for this is that code coverage only tells us how much of the code is being executed during the tests, but it does not tell us anything about the quality of the tests themselves. We could be writing very bad/unrelated tests that do not reflect the processes of training and/or inference at all, and still have a code coverage of 100%. (IKKE FÆRDIG HER)
+Our total code coverage is 62%; 85% of the api-code is covered, 70% of the data and 43% of the model code. Even if we had a code coverage of 100%, we would not trust the code to be error free. The reason for this is that code coverage only tells us how much of the code is being executed during the tests, but it does not tell us anything about the quality of the tests themselves. We could be writing very bad/unrelated tests that do not reflect the processes of training and/or inference at all, and still have a code coverage of 100%. 
 
 ### Question 9
 
