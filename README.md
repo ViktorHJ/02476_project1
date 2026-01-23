@@ -712,6 +712,16 @@ wandb agent <sweep-id>
 ### CPU build (Mac, Windows, Linux)
 ```
 docker build -f dockerfiles/train.dockerfile -t train-cpu .
+
+docker run --rm -v $(pwd)/data:/app/data train-cpu data download
+
+docker run --rm \
+  --ipc=host \
+  -v $(pwd)/data:/app/data \
+  -e WANDB_MODE=offline \
+  train-cpu train
+
+
 docker run --rm train-cpu # Some script
 docker run -it --entrypoint sh train-cpu
 ```
@@ -729,3 +739,4 @@ docker run --gpus all train-gpu # Some script
 docker build -f dockerfiles/api.dockerfile -t cifake-api .
 docker run --rm -p 8000:8000 cifake-api
 ```
+
