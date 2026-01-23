@@ -256,7 +256,11 @@ We started out with the basic cookiecutter template, that contained (somewhat) e
 >
 > Answer:
 
---- question 6 fill here ---
+We used `ruff` for linting and formatting. We also used typing in our code for some classes and functions, but not all. 
+These concepts are important when working in larger projects, due to different reasons:
+- Linting and formatting simply makes the code more readable, and ensures consistensy across all files. It ensures an industry standard for how the code should look like.
+- Typing makes it easier to understand what type of data is being passed into functions and classes, which makes it easier to understand the code, as well as making it easier to debug.
+- Documentation is important, as it allows for new team members to quickly understand what is going on in the code, what the different functions and classes do, and how to use them. It is a faster alternative to reading through the code.
 
 ## Version control
 
@@ -275,7 +279,7 @@ We started out with the basic cookiecutter template, that contained (somewhat) e
 >
 > Answer:
 
---- question 7 fill here ---
+In total, we implemented 7 tests. 4 of these tests were for the data loading part of our code, ensuring that the data was being loaded correctly, and that the transformations were being applied as intended. 2 of these tests were for the API, one to test the health endpoint, and one to test the inference endpoint. Finally...
 
 ### Question 8
 
@@ -290,7 +294,7 @@ We started out with the basic cookiecutter template, that contained (somewhat) e
 >
 > Answer:
 
---- question 8 fill here ---
+Our total code coverage is 62%; 85% of the api-code is covered, 70% of the data and 43% of the model code. Even if we had a code coverage of 100%, we would not trust the code to be error free. The reason for this is that code coverage only tells us how much of the code is being executed during the tests, but it does not tell us anything about the quality of the tests themselves. We could be writing very bad/unrelated tests that do not reflect the processes of training and/or inference at all, and still have a code coverage of 100%. 
 
 ### Question 9
 
@@ -305,7 +309,7 @@ We started out with the basic cookiecutter template, that contained (somewhat) e
 >
 > Answer:
 
---- question 9 fill here ---
+We made use of branches in our project. We primarily worked on main if it was small changes, but if we wanted to implement something larger, like logging with wandb or new configurations with hydra, we would create a new branch for those features. Once we considered the feature to be done and it did not produce any errors, we would merge it into main. To put it differently, if the implementation of a feature would impede other team members from running the code or produced errors, we would create a new branch for that feature, and then delete the branch once it was merged into main.
 
 ### Question 10
 
