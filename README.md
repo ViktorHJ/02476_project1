@@ -737,11 +737,13 @@ uv run wandb sweep configs/sweep_bayes.yaml
 uv run wandb sweep configs/sweep_grid.yaml
 ```
 ```
-uv run wandb agent vhj-dtu/02476_project1/ [Some sweep id]
+uv run wandb agent vhj-dtu/02476_project1/ <Some sweep id>
 ```
 ```
 uv run evaluate
 ```
+```
+uv run visualize visualize-training-metrics-from-wandb-run <wandb run name>
 ## Docker API
 ```
 docker build -f dockerfiles/api.dockerfile -t cifake-api .
@@ -758,6 +760,7 @@ docker build \
 
 docker run --gpus all train-gpu # Some script
 ```
+
 
 
 
