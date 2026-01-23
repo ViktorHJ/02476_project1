@@ -55,6 +55,7 @@ The directory structure of the project looks like this:
 ├── requirements_dev.txt      # Development requirements
 └── tasks.py                  # Project tasks
 ```
+This is now a bit outdated since we have added a few more files/folders, but the overall structure is the same.
 
 
 Created using [mlops_template](https://github.com/SkafteNicki/mlops_template),
@@ -414,7 +415,7 @@ In the second image, we can see the validation loss of several different runs. W
 >
 > Answer:
 
---- question 15 fill here ---
+
 
 ### Question 16
 
