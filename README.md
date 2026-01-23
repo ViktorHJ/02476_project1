@@ -652,17 +652,7 @@ We had a few challenges, but the biggest one was in terms of, how we best link a
 > *We have used ChatGPT to help debug our code. Additionally, we used GitHub Copilot to help write some of our code.*
 > Answer:
 
-fewafewubaofewnafioewnifowf ewafw afew afewafewafionewoanf waf ewonfieownaf fewnaiof newio fweanøf wea fewa
- fweafewa fewiagonwa ognwra'g
- wa
- gwreapig ipweroang w rag
- wa grwa
-  g
-  ew
-  gwea g
-  ew ag ioreabnguorwa bg̈́aw
-   wa
-   gew4igioera giroeahgi0wra gwa
+Student s224819 largely worked with setting up the initial model architecture that was used for testing our training pipeline, as well as the api structure and continuous integration setup. 
 
 
 
