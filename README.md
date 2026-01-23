@@ -599,7 +599,7 @@ We never used GCP, as we merely used W&B to store both training metrics, trained
 >
 > Answer:
 
---- question 28 fill here ---
+We implemented functionality for the docker containers to be run on a local gpu and not just cpu, but beyond that, we did not implement anything extra.
 
 ### Question 29
 
@@ -648,17 +648,9 @@ We had a few challenges, but the biggest one was in terms of, how we best link a
 > *We have used ChatGPT to help debug our code. Additionally, we used GitHub Copilot to help write some of our code.*
 > Answer:
 
-fewafewubaofewnafioewnifowf ewafw afew afewafewafionewoanf waf ewonfieownaf fewnaiof newio fweanøf wea fewa
- fweafewa fewiagonwa ognwra'g
- wa
- gwreapig ipweroang w rag
- wa grwa
-  g
-  ew
-  gwea g
-  ew ag ioreabnguorwa bg̈́aw
-   wa
-   gew4igioera giroeahgi0wra gwa
+Student s224167 has primarily worked in the implementing the src code, especially the data.py, evaluate.py and visualize.py. Furthermore, they have implemented the local system monitoring. They have also contributed slightly to the setting up the CLI, but they were not the main person responsible for that. They have also implemented unit testing for the data and the data module (tests/data_test.py)
+
+Generative AI tools, such as ChatGPT, Gemini and Github Copilot have been used to speed up the code-writing process and for debugging.
 
 
 
@@ -757,7 +749,7 @@ curl -X POST http://127.0.0.1:8000/predict/ -F "data=@data/test/FAKE/0 (2).jpg"
 docker build -f dockerfiles/train.dockerfile -t train-cpu .
 ```
 ```
-docker run -it --ipc=host --entrypoint sh train-cpu
+docker run -it --ipc=host -v "$(pwd)/reports:/app/reports" --entrypoint sh train-cpu
 ```
 then in the shell you can run uv commands just as naitive unix
 ```
@@ -814,6 +806,6 @@ sed -i 's/pytorch-cpu/pytorch-gpu/g' pyproject.toml && sed -i 's|https://downloa
 docker build -f dockerfiles/train_cuda.dockerfile -t train-gpu .
 ```
 ```
-docker run -it --ipc=host --gpus all --entrypoint sh train-gpu
+docker run -it --ipc=host -v "$(pwd)/reports:/app/reports" --gpus all --entrypoint sh train-gpu
 ```
 From here its the same as above, enjoy the shell (:
