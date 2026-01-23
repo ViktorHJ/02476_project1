@@ -1,11 +1,10 @@
-import os
 from pathlib import Path
 import wandb
 
 run = wandb.init(project="02476_project1", entity="vhj-dtu", job_type="inference")
 
 artifact = run.use_artifact("vhj-dtu/02476_project1/model-0qmzh7ah:v0", type="model")
-artifact_dir = Path(artifact.download())
+artifact_dir = Path(artifact.download(root="./models/"))
 
 # Find a likely weights file
 candidates = []
