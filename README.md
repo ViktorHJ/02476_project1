@@ -241,7 +241,7 @@ We used `uv` for managing our dependencies. Whenever we needed to add a new depe
 >
 > Answer:
 
-We started out with the basic cookiecutter template, that contained (somewhat) empty files for data loading, model, training, evaluation as well as many other folders and files. We filled these basic files out, and got the basic functionality of our project working. However, when we wanted to add the API functionality, we had to create a file called fetch_model, which would download a model from W&B and store it locally, so that the API could access it. This was one deviation, and the other was that in the basic template, all tests were lumped together in a single test folder. To work more in accordance with the course material, we created seperate folders for testing the API, as well as the performance/load-tests.
+We started out with the basic cookiecutter template, that contained (somewhat) empty files for data loading, model, training, evaluation as well as many other folders and files. We filled these basic files out, and got the basic functionality of our project working. However, when we wanted to add the API functionality, we had to create a file called `fetch_model.py`, which would download a model from W&B and store it locally, so that the API could access it. This was one deviation, and the other was that in the basic template, all tests were lumped together in a single test folder. To work more in accordance with the course material, we created seperate folders for testing the API, as well as the performance/load-tests.
 
 ### Question 6
 
@@ -343,7 +343,7 @@ We did not make use of DVC in our project. However, it would have been beneficia
 
 For our continuous integration, we used two different methods: pre-commits and GitHub actions.
 - For pre-commits, we used `ruff` which would automatically check the code for any linting errors or formatting issues before allowing us to commit, ensuring that the code always followed the PEP8 guidelines. Furthermore, we also made sure all our tests were passing before allowing a commit, using pytest. Finally, we made use of githubs own hooks that did minor checks on stuff like trailing whitespace, end-of-file newlines, correct yaml formatting etc. This was all to make sure that the committed product was readable.
-- For GitHub actions, we had three different workflows: one for linting, which more or less does the same as the pre-commit, but now on the remote repository. The second workflow was for running our tests, where a docker image was built, and then the tests were run inside the docker container, to ensure that the code would also work in a docker-environment. The third workflow was a standard pre-commit-update workflow, that would automatically update our pre-commit hooks every day. We also had a dependabot setup, that would check for outdated dependencies every week, and create pull requests for updating them. We did not make use of caching(?)
+- For GitHub actions, we had three different workflows: one for linting, which more or less does the same as the pre-commit, but now on the remote repository. The second workflow was for running our tests, where a docker image was built, and then the tests were run inside the docker container, to ensure that the code would also work in a docker-environment. The third workflow was a standard pre-commit-update workflow, that would automatically update our pre-commit hooks every day. We also had a dependabot setup, that would check for outdated dependencies every week, and create pull requests for updating them. We did not make use of caching.
 
 ## Running code and tracking experiments
 
@@ -379,6 +379,7 @@ We used Hydra for configuring our experiments. This allowed us to create configu
 > Answer:
 
 As previously mentioned, we used Hydra for configuring our experiments. This allowed us to create configuration files in yaml-format, where we could specify hyperparameters and other settings for our experiments. Using Hydra ensured that no information was lost when running experiments, as all the hyperparameters and settings were stored in the configuration files, and using the same random seed would ensure that the results were reproducible. To reproduce an experiment, one would have to run the same script with the same configuration file and random seed. The point of using docker was also to ensure reproducibility, as the docker container would have the same environment and dependencies as the original environment, ensuring that the code would run the same way regardless of where it was run.
+(guys check lige dette svar igennem)
 
 ### Question 14
 
@@ -397,6 +398,8 @@ As previously mentioned, we used Hydra for configuring our experiments. This all
 
 ![alt text](q14_1.png)
 ![alt text](q14_2.png)
+In the first image, we can see the different runs of a wandb sweep, where we tried finding the best hyperparameter-combination, that could achieve the lowest possible validation loss. This was done through wandb's built-in bayesian optimization. This type of optimization is important, as it allows us to find the best hyperparameters for our model, without having to manually try out different combinations. This is also why some hyperparameters are more used than others, as the bayesian optimization would try to find the best combination, and would therefore try out certain combinations more than others. The method infers that certain hyperparameters are better than others, and would therefore try to combine these more often.
+In the second image, we can see the validation loss of several different runs. While our main focus was the first image, this image still allows us to see how certain hyperparameter-combinations performed, and which ones perfomed better or worse. Validation loss is an important metric, as it allows us to see how well our model is generalizing to unseen data. A low validation loss would tell us that our model is performing well on unseen data, while a high validation loss would indicate that our model is overfitting to the training data.
 
 ### Question 15
 
@@ -549,7 +552,8 @@ We deployed our model locally, which worked, but we never got to deploy it in th
 >
 > Answer:
 
---- question 25 fill here ---
+We performed both unit testing and load testing of our API. For unit testing, we created a test file called `test_api.py`, where we had two tests: one for the health endpoint, and one for the inference endpoint. For the inference endpoint, we just used a randomly generated image to test if the endpoint was working as intended, if the probabilities were between 0 and 1, and if the data contained the correct labels. For load testing, we used `locust`, where we created a locustfile that would continuously send requests to both the health and inference endpoints. We tried with 1000 max concurrent users and a spawn rate of 200. We wound up with a failure rate of ~1%.
+![alt text](loc.png)
 
 ### Question 26
 
@@ -606,7 +610,7 @@ We implemented functionality for the docker containers to be run on a local gpu 
 > **Include a figure that describes the overall architecture of your system and what services that you make use of.**
 > **You can take inspiration from [this figure](figures/overview.png). Additionally, in your own words, explain the**
 > **overall steps in figure.**
->
+>![alt text](q29.png)
 > Recommended answer length: 200-400 words
 >
 > Example:
@@ -650,9 +654,9 @@ We had a few challenges, but the biggest one was in terms of, how we best link a
 
 Student s224167 has primarily worked in the implementing the src code, especially the data.py, evaluate.py and visualize.py. Furthermore, they have implemented the local system monitoring. They have also contributed slightly to the setting up the CLI, but they were not the main person responsible for that. They have also implemented unit testing for the data and the data module (tests/data_test.py)
 
+Student s224819 largely worked with setting up the initial model architecture that was used for testing our training pipeline, as well as the api structure and continuous integration setup.
+
 Generative AI tools, such as ChatGPT, Gemini and Github Copilot have been used to speed up the code-writing process and for debugging.
-
-
 
 
 
