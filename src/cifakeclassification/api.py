@@ -37,7 +37,6 @@ async def lifespan(app: FastAPI):
     ckpt_path = os.getenv("MODEL_CKPT", "models/model.ckpt")
     image_size = int(os.getenv("IMAGE_SIZE", "32"))
 
-    # ✅ Make relative paths work (so you can set MODEL_CKPT=artifacts/... in .env)
     p = Path(ckpt_path)
     if not p.is_absolute():
         p = PROJECT_ROOT / p
