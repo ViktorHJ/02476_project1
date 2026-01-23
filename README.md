@@ -398,6 +398,8 @@ As previously mentioned, we used Hydra for configuring our experiments. This all
 
 ![alt text](q14_1.png)
 ![alt text](q14_2.png)
+In the first image, we can see the different runs of a wandb sweep, where we tried finding the best hyperparameter-combination, that could achieve the lowest possible validation loss. This was done through wandb's built-in bayesian optimization. This type of optimization is important, as it allows us to find the best hyperparameters for our model, without having to manually try out different combinations. This is also why some hyperparameters are more used than others, as the bayesian optimization would try to find the best combination, and would therefore try out certain combinations more than others. The method infers that certain hyperparameters are better than others, and would therefore try to combine these more often. 
+In the second image, we can see the validation loss of several different runs. While our main focus was the first image, this image still allows us to see how certain hyperparameter-combinations performed, and which ones perfomed better or worse. Validation loss is an important metric, as it allows us to see how well our model is generalizing to unseen data. A low validation loss would tell us that our model is performing well on unseen data, while a high validation loss would indicate that our model is overfitting to the training data.
 
 ### Question 15
 
