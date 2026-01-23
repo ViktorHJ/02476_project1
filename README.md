@@ -654,7 +654,7 @@ We had a few challenges, but the biggest one was in terms of, how we best link a
 > Answer:
 
 Student s224167 has primarily worked in the implementing the src code, especially the data.py, evaluate.py and visualize.py. Furthermore, they have implemented the local system monitoring. They have also contributed slightly to the setting up the CLI, but they were not the main person responsible for that. They have also implemented unit testing for the data and the data module (tests/data_test.py)
-
+Student s224199 Was responsible for Repos, The W&B organization and pipeline. Implementation of Docker, multi native uv building, scaling of training across platforms/CUDA. Pretraining model via Sweeps, hyperparameters optimization
 Student s224819 largely worked with setting up the initial model architecture that was used for testing our training pipeline, as well as the api structure and continuous integration setup.
 
 Generative AI tools, such as ChatGPT, Gemini and Github Copilot have been used to speed up the code-writing process and for debugging.
@@ -814,3 +814,4 @@ docker build -f dockerfiles/train_cuda.dockerfile -t train-gpu .
 docker run -it --ipc=host -v "$(pwd)/reports:/app/reports" --gpus all --entrypoint sh train-gpu
 ```
 From here its the same as above, enjoy the shell (:
+
