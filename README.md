@@ -689,4 +689,9 @@ uv run uvicorn cifakeclassification.api:app --port 8000 --app-dir src
 
 ## To test:
 curl -X POST "http://127.0.0.1:8000/predict/" \
+
   -F 'data=@"data/test/FAKE/0 (2).jpg"'
+
+## Docker build and run 
+docker build -f dockerfiles/api.Dockerfile -t cifake-api .
+docker run --rm -p 8000:8000 cifake-api
