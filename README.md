@@ -241,7 +241,7 @@ We used `uv` for managing our dependencies. Whenever we needed to add a new depe
 >
 > Answer:
 
-We started out with the basic cookiecutter template, that contained (somewhat) empty files for data loading, model, training, evaluation as well as many other folders and files. We filled these basic files out, and got the basic functionality of our project working. However, when we wanted to add the API functionality, we had to create a file called fetch_model, which would download a model from W&B and store it locally, so that the API could access it. This was one deviation, and the other was that in the basic template, all tests were lumped together in a single test folder. To work more in accordance with the course material, we created seperate folders for testing the API, as well as the performance/load-tests.
+We started out with the basic cookiecutter template, that contained (somewhat) empty files for data loading, model, training, evaluation as well as many other folders and files. We filled these basic files out, and got the basic functionality of our project working. However, when we wanted to add the API functionality, we had to create a file called `fetch_model.py`, which would download a model from W&B and store it locally, so that the API could access it. This was one deviation, and the other was that in the basic template, all tests were lumped together in a single test folder. To work more in accordance with the course material, we created seperate folders for testing the API, as well as the performance/load-tests.
 
 ### Question 6
 
@@ -379,6 +379,7 @@ We used Hydra for configuring our experiments. This allowed us to create configu
 > Answer:
 
 As previously mentioned, we used Hydra for configuring our experiments. This allowed us to create configuration files in yaml-format, where we could specify hyperparameters and other settings for our experiments. Using Hydra ensured that no information was lost when running experiments, as all the hyperparameters and settings were stored in the configuration files, and using the same random seed would ensure that the results were reproducible. To reproduce an experiment, one would have to run the same script with the same configuration file and random seed. The point of using docker was also to ensure reproducibility, as the docker container would have the same environment and dependencies as the original environment, ensuring that the code would run the same way regardless of where it was run.
+(guys check lige dette svar igennem)
 
 ### Question 14
 
@@ -548,7 +549,7 @@ We used FastAPI to write an API for our model. It loads in a local model-checkpo
 >
 > Answer:
 
---- question 25 fill here ---
+We performed both unit testing and load testing of our API. For unit testing, we created a test file called `test_api.py`, where we had two tests: one for the health endpoint, and one for the inference endpoint. For the inference endpoint, we just used a randomly generated image to test if the endpoint was working as intended, if the probabilities were between 0 and 1, and if the data contained the correct labels. For load testing, we used `locust`, where we created a locustfile that would continuously send requests to both the health and inference endpoints. We tried with 50 users and a spawn rate of 
 
 ### Question 26
 
