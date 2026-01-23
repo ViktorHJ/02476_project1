@@ -701,6 +701,9 @@ data/test/FAKE/0 (2).jpg is just the path to an example image. This path should 
 ## Docker train
 ### CPU build
 ```
+docker build -f dockerfiles/train.dockerfile -t train-cpu .
+```
+```
 docker run -it --ipc=host --entrypoint sh train-cpu
 ```
 then in the shell you can run uv commands as normal
@@ -747,6 +750,7 @@ docker build \
 
 docker run --gpus all train-gpu # Some script
 ```
+
 
 
 
