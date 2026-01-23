@@ -18,6 +18,8 @@ RUN uv sync --frozen --no-install-project
 COPY src/ src/
 COPY configs/ configs/
 COPY models/ models/
+COPY .env .env
+COPY reports/ reports/
 
 # Install project code
 RUN uv sync --frozen
