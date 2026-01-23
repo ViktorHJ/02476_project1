@@ -14,9 +14,15 @@ COPY src/ src/
 COPY models/ models/
 COPY README.md README.md
 COPY LICENSE LICENSE
+COPY tests/ tests/
+
 
 # Install project code
 RUN uv sync --frozen
+
+# Download CIFakeClassification data
+RUN uv run data download
+
 
 # Make src importable
 ENV PYTHONPATH="/app/src:\${PYTHONPATH}"

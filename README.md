@@ -435,7 +435,7 @@ s224819, s224167, s224199
 >
 > Answer:
 
---- question 17 fill here ---
+We never used any GCP service, as our model is very small in memory and our data can be loaded in from kaggle in very short time. To store the model and training metrics, we both stored models in W&B and when evaluating a model in our evaluate.py script, we needed a model checkpoint to be saved locally. This eliminated any direct need for using GCP services, although in hindsight, being more consistent in how the models were accessed and stored would have likely made the application easier to set up at the end of the development phase, as we would not need the user to be able to access W&B, simply for loading in a model to make predictions with.
 
 ### Question 18
 
@@ -450,7 +450,7 @@ s224819, s224167, s224199
 >
 > Answer:
 
---- question 18 fill here ---
+As mentioned, we did not use any GCP service. The compute engine would have been to rent a VM from google, where we could request more computing power than we have access to on our local machines. However, for our model, we had plenty of computing power on our local machines to train it. The process could probably still have been speed up if we used a VM for google.
 
 ### Question 19
 
@@ -574,7 +574,7 @@ s224819, s224167, s224199
 >
 > Answer:
 
---- question 27 fill here ---
+We never used GCP, as we merely used W&B to store both training metrics, trained models and evaluation metrics.
 
 ### Question 28
 
@@ -607,7 +607,7 @@ s224819, s224167, s224199
 >
 > Answer:
 
---- question 29 fill here ---
+
 
 ### Question 30
 
@@ -621,7 +621,7 @@ s224819, s224167, s224199
 >
 > Answer:
 
---- question 30 fill here ---
+We had a few challenges, but the biggest one was in terms of, how we best link all of our apps functionalities together. For example, if we train a model and store it on wandb, how do we best make sure the users of our app has access to the model, so that they can evaluate it and visualize the training metrics of the model? On top of that, the users need to be able to train their own models in our app. The reason that this became such a big problem was that we probably did not communicate well enough to each other, in the beginning, how we wanted our app to end up. This meant that we had to create some less optimal solutions for linking together the functionalities for our app's CLI. This problem was mostly just encountered towards the end of the development of our app. A better fix for this would likely have been to use GCP, which would have given us a better way of storing the model and the training metrics. Then we would have instead just used W&B for performing sweeps for finding the best hyperparameters to train our model with.
 
 ### Question 31
 
@@ -669,29 +669,63 @@ uv sync --dev
 ### GIT woorktree ingore
 git update-index --skip-worktree .env
 
-# Dependencies so far
-## WSL 2
+## Dependencies
+### WSL 2
 sudo apt get unzip
 
-## Data download
+### Data download
 uv run data download
 
-## CPU/GPU Build switch, default is cpu
+### CPU/GPU Build switch, default is cpu
 Unix CUDA Switch to GPU: sed -i 's/pytorch-cpu/pytorch-gpu/g' pyproject.toml && sed -i 's|https://download.pytorch.org/whl/cpu|https://download.pytorch.org/whl/cu124|g' pyproject.toml && rm uv.lock && uv sync
 
 UNIX / WINDOWS CPU Switch back to CPU: sed -i 's/pytorch-gpu/pytorch-cpu/g' pyproject.toml && sed -i 's|https://download.pytorch.org/whl/cu124|https://download.pytorch.org/whl/cpu|g' pyproject.toml && rm uv.lock && uv sync
 
 MAC CPU sed -i '' 's/pytorch-gpu/pytorch-cpu/g' pyproject.toml && sed -i '' 's|https://download.pytorch.org/whl/cu124|https://download.pytorch.org/whl/cpu|g' pyproject.toml && rm uv.lock && uv sync
 
+## API
+### Monitor API metrics
+http://localhost:8000/metrics/
 
-## To start API:
+### To start API:
 uv run uvicorn cifakeclassification.api:app --port 8000 --app-dir src
 
-## To test:
+### To make prediction on image using API:
 curl -X POST "http://127.0.0.1:8000/predict/" \
 
   -F 'data=@"data/test/FAKE/0 (2).jpg"'
 
-## Docker build and run 
-docker build -f dockerfiles/api.Dockerfile -t cifake-api .
+data/test/FAKE/0 (2).jpg is just the path to an example image. This path should merely lead to a 3x32x32 image
+
+# Docker build and run
+## Docker train
+## Scripts:
+```
+data download
+train
+evaluate
+visualize visualize-training-metrics-from-wandb-run <run-name>
+wandb sweep configs/sweep_grid.yaml
+wandb sweep configs/sweep_bayes.yaml
+wandb agent <sweep-id>
+```
+### CPU build (Mac, Windows, Linux)
+```
+docker build -f dockerfiles/train.dockerfile -t train-cpu .
+docker run --rm train-cpu # Some script
+docker run -it --entrypoint sh train-cpu
+```
+### GPU build (Linux with NVIDIA)
+```
+docker build \
+  -f dockerfiles/train.dockerfile \
+  -t train-gpu \
+  --build-arg BASE_IMAGE=pytorch/pytorch:2.2.0-cuda12.1-cudnn8-runtime .
+
+docker run --gpus all train-gpu # Some script
+```
+## Docker API
+```
+docker build -f dockerfiles/api.dockerfile -t cifake-api .
 docker run --rm -p 8000:8000 cifake-api
+```
