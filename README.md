@@ -708,6 +708,7 @@ wandb agent <sweep-id>
 ```
 docker build -f dockerfiles/train.dockerfile -t train-cpu .
 docker run --rm train-cpu # Some script
+docker run -it --entrypoint sh train-cpu
 ```
 ### GPU build (Linux with NVIDIA)
 ```
@@ -723,6 +724,7 @@ docker run --gpus all train-gpu # Some script
 docker build -f dockerfiles/api.dockerfile -t cifake-api .
 docker run --rm -p 8000:8000 cifake-api
 ```
+
 
 
 
