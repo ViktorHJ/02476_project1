@@ -29,7 +29,7 @@ dependencies = [
     "python-dotenv>=1.2.1",
     "python-multipart>=0.0.21",
     "pytorch-lightning>=2.6.0",
-    "torch==2.6.0",
+    "torch==2.10.0",
     "torchvision>=0.21.0",
     "typer>=0.21.1",
     "uvicorn==0.34.0",
@@ -50,11 +50,11 @@ dev = [
     "pandas>=2.3.3",
 ]
 cpu = [
-    "torch==2.6.0",
+    "torch==2.10.0",
     "torchvision>=0.21.0",
 ]
 gpu = [
-    "torch==2.6.0",
+    "torch==2.10.0",
     "torchvision>=0.21.0",
 ]
 
