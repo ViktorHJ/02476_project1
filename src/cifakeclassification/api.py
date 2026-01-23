@@ -12,7 +12,7 @@ from torchvision import transforms
 from cifakeclassification.model import Cifake_CNN
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv()  
 
 model: Cifake_CNN | None = None
 device: torch.device | None = None
