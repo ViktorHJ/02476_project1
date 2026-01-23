@@ -665,56 +665,92 @@ fewafewubaofewnafioewnifowf ewafw afew afewafewafionewoanf waf ewonfieownaf fewn
 
 
 
-# COPY PASTA
-
-## UV .venv commands
-### Install pre-commit hooks
-uv run pre-commit install --install-hooks
-### Install Dependencies
-uv sync --dev
-
-## GIT
-### GIT woorktree ingore
-git update-index --skip-worktree .env
-
+# The CLI guide to the galaxy
 ## Dependencies
-### WSL 2
-sudo apt get unzip
+This project runs on docker,.. but also naitivly in Unix/Mac and With CUDA, if youre on windows you can naitivly run the source code in WSL2 with UV.
+Else the only dependency is docker.
 
-### Data download
+for native execution simply run
+```
+uv sync
+```
+and then all scripts are accessible from root.
+```
 uv run data download
+```
 
-### CPU/GPU Build switch, default is cpu
-If you want to run in the native OS (ouside docker) These commands switch the .toml file since UV does not support conditinal images.
+## Help
+If you need documentation on a module or class they can be accessed as follows:
+### Module
+```
+uv run python - << 'EOF'
+import cifakeclassification.<module_name> as m
+print(m.__doc__)
+EOF
+```
+### Class
+```
+uv run python - << 'EOF'
+from cifakeclassification.<module_name> import <class_name>
+print(<class_name>.__doc__)
+EOF
+```
+### Function
+```
+uv run python - << 'EOF'
+from cifakeclassification.<module_name> import <function_name>
+print(<function_name>.__doc__)
+EOF
+```
+
+## CPU/GPU Build switch, default is cpu
+While running native (ouside docker) These commands switch the .toml file since UV does not support conditinal images.
 If you are not running a CUDA gpu the default is already set.
 
-Unix CUDA Switch to GPU:
+### Unix CUDA Switch to GPU:
 ```
 sed -i 's/pytorch-cpu/pytorch-gpu/g' pyproject.toml && sed -i 's|https://download.pytorch.org/whl/cpu|https://download.pytorch.org/whl/cu124|g' pyproject.toml && rm uv.lock && uv sync
 ```
-UNIX / WINDOWS CPU Switch back to CPU:
+### UNIX / WINDOWS CPU Switch back to CPU:
 ```
 sed -i 's/pytorch-gpu/pytorch-cpu/g' pyproject.toml && sed -i 's|https://download.pytorch.org/whl/cu124|https://download.pytorch.org/whl/cpu|g' pyproject.toml && rm uv.lock && uv sync
 ```
-MAC:
+### MAC:
 ```
 sed -i '' 's/pytorch-gpu/pytorch-cpu/g' pyproject.toml && sed -i '' 's|https://download.pytorch.org/whl/cu124|https://download.pytorch.org/whl/cpu|g' pyproject.toml && rm uv.lock && uv sync
 ```
-## API
-### Monitor API metrics
-http://localhost:8000/metrics/
 
-### To start API:
-uv run uvicorn cifakeclassification.api:app --port 8000 --app-dir src
 
-### To make prediction on image using API:
+## DOCKER API
+The API can be built and run with included pretrained model and dataset
+```
+docker build -f dockerfiles/api.dockerfile -t cifake-api .
+```
+When you run the docker API it will launch a server in this case this is a local server
+```
+docker run --rm -p 8000:8000 cifake-api
+```
+Then on the host pc of the local server connect to the sever and input some 3x32x32 image,
+our example runs in the root of the project.
 ```
 curl -X POST http://127.0.0.1:8000/predict/ -F "data=@data/test/FAKE/0 (2).jpg"
 ```
-data/test/FAKE/0 (2).jpg is just the path to an example image. This path should merely lead to a 3x32x32 image
+We used "data/test/FAKE/0 (2).jpg" this image is from the Kaggle dataset downloaded earlier with "uv run data download"
 
-# Docker build and run
-## Docker train
+### Monitor API metrics
+http://localhost:8000/metrics/
+
+## Native API
+The API can also run nativly on Unix
+```
+uv run uvicorn cifakeclassification.api:app --port 8000 --app-dir src
+```
+And as before the path should merely lead to a 3x32x32 image, you can access the API like so:
+```
+curl -X POST http://127.0.0.1:8000/predict/ -F "data=@data/test/FAKE/0 (2).jpg"
+```
+
+## Docker train build and run
 ### CPU build
 ```
 docker build -f dockerfiles/train.dockerfile -t train-cpu .
@@ -722,25 +758,31 @@ docker build -f dockerfiles/train.dockerfile -t train-cpu .
 ```
 docker run -it --ipc=host --entrypoint sh train-cpu
 ```
-then in the shell you can run uv commands as normal
+then in the shell you can run uv commands just as naitive unix
 ```
 uv run data download
 ```
+This next command will promt you for an API key, it can be obtained with a free account on https://wandb.ai
 ```
 uv run wandb login
 ```
+If you misstype run:
 ```
 uv run wandb login --relogin
 ```
+Test train to see your systems performance
 ```
 uv run train
 ```
-```
-uv run wandb sweep configs/sweep_bayes.yaml
-```
+We reccomend a gridsearch first if youre experimenting with model configuration, then you can exhaustivly elleminate bad parameters
 ```
 uv run wandb sweep configs/sweep_grid.yaml
 ```
+Optimize model with
+```
+uv run wandb sweep configs/sweep_bayes.yaml
+```
+After generating an agent access it with
 ```
 uv run wandb agent vhj-dtu/02476_project1/ <Some sweep id>
 ```
@@ -750,18 +792,8 @@ uv run evaluate
 ```
 uv run visualize visualize-training-metrics-from-wandb-run <wandb run name>
 ```
-## Docker API
-```
-docker build -f dockerfiles/api.dockerfile -t cifake-api .
-```
-```
-docker run --rm -p 8000:8000 cifake-api
-```
-Then on the host pc connect to the sever and input some 3x32x32 image, for example data/test/FAKE/0 (2).jpg 
-```
-curl -X POST http://127.0.0.1:8000/predict/ -F "data=@data/test/FAKE/0 (2).jpg"
-```
-### GPU build (Linux with NVIDIA)
+### Docker CUDA GPU build
+although on windows we recommend the naitive route for performance, a GPU docker image can be built like so:
 ```
 sed -i 's/pytorch-cpu/pytorch-gpu/g' pyproject.toml && sed -i 's|https://download.pytorch.org/whl/cpu|https://download.pytorch.org/whl/cu124|g' pyproject.toml && rm uv.lock && uv sync
 ```
@@ -772,4 +804,3 @@ docker build -f dockerfiles/train_cuda.dockerfile -t train-gpu .
 docker run -it --ipc=host --gpus all --entrypoint sh train-gpu
 ```
 From here its the same as above, enjoy the shell (:
-
