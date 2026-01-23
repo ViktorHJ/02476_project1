@@ -467,7 +467,7 @@ As mentioned, we did not use any GCP service. The compute engine would have been
 >
 > Answer:
 
---- question 19 fill here ---
+We have not used GCP.
 
 ### Question 20
 
@@ -476,7 +476,7 @@ As mentioned, we did not use any GCP service. The compute engine would have been
 >
 > Answer:
 
---- question 20 fill here ---
+We have not used GCP.
 
 ### Question 21
 
@@ -485,7 +485,7 @@ As mentioned, we did not use any GCP service. The compute engine would have been
 >
 > Answer:
 
---- question 21 fill here ---
+We have not used GCP.
 
 ### Question 22
 
