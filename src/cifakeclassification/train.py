@@ -95,10 +95,19 @@ def train(cfg: DictConfig):
         save_dir=".",
     )
 
+    # --- Dynamic Workers ---
+    if torch.backends.mps.is_available():
+        num_workers = 0  # Default Mac:
+    elif torch.cuda.is_available():
+        num_workers = torch.cuda.device_count() * 4  # Default CUDA:
+    else:
+        # WSL / 4-core 8-thread:
+        num_workers = min(4, os.cpu_count() or 1)
+
     # --- Data Module ---
     datamodule = ImageDataModule(
         batch_size=hp.batch_size,
-        num_workers=0,
+        num_workers=num_workers,
         val_split=0.2,
     )
 
