@@ -692,6 +692,39 @@ curl -X POST "http://127.0.0.1:8000/predict/" \
 
   -F 'data=@"data/test/FAKE/0 (2).jpg"'
 
-## Docker build and run 
-docker build -f dockerfiles/api.Dockerfile -t cifake-api .
+# Docker build and run
+## Docker train
+## Scripts:
+```
+data download
+train
+evaluate
+visualize
+wandb sweep configs/sweep_grid.yaml
+wandb sweep configs/sweep_bayes.yaml
+wandb agent <sweep-id>
+```
+### CPU build (Mac, Windows, Linux)
+```
+docker build -f dockerfiles/train.dockerfile -t train-cpu .
+docker run --rm train-cpu # Some script
+docker run -it --entrypoint sh train-cpu
+```
+### GPU build (Linux with NVIDIA)
+```
+docker build \
+  -f dockerfiles/train.dockerfile \
+  -t train-gpu \
+  --build-arg BASE_IMAGE=pytorch/pytorch:2.2.0-cuda12.1-cudnn8-runtime .
+
+docker run --gpus all train-gpu # Some script
+```
+## Docker API
+```
+docker build -f dockerfiles/api.dockerfile -t cifake-api .
 docker run --rm -p 8000:8000 cifake-api
+```
+
+
+
+
