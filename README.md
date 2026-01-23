@@ -680,6 +680,7 @@ for native execution simply run
 uv sync
 ```
 and then all scripts are accessible from root.
+Unzip may not be installed with WSL/Unix, it is a requiment to get it 
 ```
 uv run data download
 ```
@@ -821,5 +822,6 @@ docker build -f dockerfiles/train_cuda.dockerfile -t train-gpu .
 docker run -it --ipc=host -v "$(pwd)/reports:/app/reports" --gpus all --entrypoint sh train-gpu
 ```
 From here its the same as above, enjoy the shell (:
+
 
 
