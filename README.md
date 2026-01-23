@@ -550,7 +550,8 @@ We deployed our model locally, which worked, but we never got to deploy it in th
 >
 > Answer:
 
-We performed both unit testing and load testing of our API. For unit testing, we created a test file called `test_api.py`, where we had two tests: one for the health endpoint, and one for the inference endpoint. For the inference endpoint, we just used a randomly generated image to test if the endpoint was working as intended, if the probabilities were between 0 and 1, and if the data contained the correct labels. For load testing, we used `locust`, where we created a locustfile that would continuously send requests to both the health and inference endpoints. We tried with 50 users and a spawn rate of 
+We performed both unit testing and load testing of our API. For unit testing, we created a test file called `test_api.py`, where we had two tests: one for the health endpoint, and one for the inference endpoint. For the inference endpoint, we just used a randomly generated image to test if the endpoint was working as intended, if the probabilities were between 0 and 1, and if the data contained the correct labels. For load testing, we used `locust`, where we created a locustfile that would continuously send requests to both the health and inference endpoints. We tried with 1000 max concurrent users and a spawn rate of 200. We wound up with a failure rate of ~1%.
+![alt text](loc.png)
 
 ### Question 26
 
