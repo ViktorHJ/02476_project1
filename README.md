@@ -117,10 +117,10 @@ will check the repositories and the code to verify your answers.
 * [x] Add a model to `model.py` and a training procedure to `train.py` and get that running (M6)
 * [x] Remember to fill out the `requirements.txt` and `requirements_dev.txt` file with whatever dependencies that you
     are using (M2+M6)
-* [t] Remember to comply with good coding practices (`pep8`) while doing the project (M7)
+* [x] Remember to comply with good coding practices (`pep8`) while doing the project (M7)
 * [t] Do a bit of code typing and remember to document essential parts of your code (M7)
-* [t] Setup version control for your data or part of your data (M8)
-* [o] Add command line interfaces and project commands to your code where it makes sense (M9)
+* [x] Setup version control for your data or part of your data (M8)
+* [x] Add command line interfaces and project commands to your code where it makes sense (M9)
 * [x] Construct one or multiple docker files for your code (M10)
 * [x] Build the docker files locally and make sure they work as intended (M10)
 * [x] Write one or multiple configurations files for your experiments (M11)
@@ -161,7 +161,7 @@ will check the repositories and the code to verify your answers.
 * [ ] Create one or more alert systems in GCP to alert you if your app is not behaving correctly (M28)
 * [x] If applicable, optimize the performance of your data loading using distributed data loading (M29)
 * [x] If applicable, optimize the performance of your training pipeline by using distributed training (M30)
-* [o] Play around with quantization, compilation and pruning for you trained models to increase inference speed (M31)
+* [ ] Play around with quantization, compilation and pruning for you trained models to increase inference speed (M31)
 
 ### Extra
 
@@ -205,7 +205,7 @@ s224819, s224167, s224199
 >
 > Answer:
 
---- question 3 fill here ---
+We did not end up using any frameworks or packages that were not covered in the course. 
 
 ## Coding environment
 
@@ -225,7 +225,7 @@ s224819, s224167, s224199
 >
 > Answer:
 
---- question 4 fill here ---
+We used `uv` for managing our dependencies. Whenever we needed to add a new dependency, we would run `uv add <package-name>` which would both install the package in our local environment and also update the `pyproject.toml` file with the new dependency. To get an exact copy of our environment, a new team member would have to clone the git repository, install `uv`, and then finally simply run `uv sync` which would install all the dependencies listed in `pyproject.toml`. 
 
 ### Question 5
 
@@ -241,7 +241,7 @@ s224819, s224167, s224199
 >
 > Answer:
 
---- question 5 fill here ---
+We started out with the basic cookiecutter template, that contained (somewhat) empty files for data loading, model, training, evaluation as well as many other folders and files. We filled these basic files out, and got the basic functionality of our project working. However, when we wanted to add the API functionality, we had to create a file called fetch_model, which would download a model from W&B and store it locally, so that the API could access it. This was one deviation, and the other was that in the basic template, all tests were lumped together in a single test folder. To work more in accordance with the course material, we created seperate folders for testing the API, as well as the performance/load-tests.
 
 ### Question 6
 
@@ -699,33 +699,63 @@ data/test/FAKE/0 (2).jpg is just the path to an example image. This path should 
 
 # Docker build and run
 ## Docker train
-## Scripts:
-```
-data download
-train
-evaluate
-visualize visualize-training-metrics-from-wandb-run <run-name>
-wandb sweep configs/sweep_grid.yaml
-wandb sweep configs/sweep_bayes.yaml
-wandb agent <sweep-id>
-```
-### CPU build (Mac, Windows, Linux)
+### CPU build
 ```
 docker build -f dockerfiles/train.dockerfile -t train-cpu .
-docker run --rm train-cpu # Some script
-docker run -it --entrypoint sh train-cpu
 ```
-### GPU build (Linux with NVIDIA)
 ```
-docker build \
-  -f dockerfiles/train.dockerfile \
-  -t train-gpu \
-  --build-arg BASE_IMAGE=pytorch/pytorch:2.2.0-cuda12.1-cudnn8-runtime .
-
-docker run --gpus all train-gpu # Some script
+docker run -it --ipc=host --entrypoint sh train-cpu
+```
+then in the shell you can run uv commands as normal
+```
+uv run data download
+```
+```
+wandb login
+```
+```
+wandb login --relogin
+```
+```
+uv run train
+```
+```
+uv run wandb sweep configs/sweep_bayes.yaml
+```
+```
+uv run wandb sweep configs/sweep_grid.yaml
+```
+```
+uv run wandb agent vhj-dtu/02476_project1/ <Some sweep id>
+```
+```
+uv run evaluate
+```
+```
+uv run visualize visualize-training-metrics-from-wandb-run <wandb run name>
 ```
 ## Docker API
 ```
 docker build -f dockerfiles/api.dockerfile -t cifake-api .
+```
+```
 docker run --rm -p 8000:8000 cifake-api
 ```
+### GPU build (Linux with NVIDIA)
+```
+docker build -f dockerfiles/train_cuda.dockerfile -t train-gpu .
+```
+```
+```
+
+
+
+
+
+
+
+
+
+
+
+
