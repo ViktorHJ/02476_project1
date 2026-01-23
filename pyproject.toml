@@ -25,6 +25,7 @@ dependencies = [
     "matplotlib>=3.10.8",
     "omegaconf>=2.3.0",
     "pandas>=2.3.3",
+    "prometheus-client>=0.24.1",
     "python-dotenv>=1.2.1",
     "python-multipart>=0.0.21",
     "pytorch-lightning>=2.6.0",

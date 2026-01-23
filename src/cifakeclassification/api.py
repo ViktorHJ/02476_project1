@@ -6,13 +6,14 @@ from pathlib import Path
 
 import torch
 from fastapi import FastAPI, File, UploadFile, HTTPException
+from prometheus_client import Counter, Histogram, make_asgi_app
 from PIL import Image
 from torchvision import transforms
 
 from cifakeclassification.model import Cifake_CNN
 from dotenv import load_dotenv
 
-load_dotenv()  
+load_dotenv()
 
 model: Cifake_CNN | None = None
 device: torch.device | None = None
@@ -28,6 +29,11 @@ def pick_device() -> torch.device:
     if torch.cuda.is_available():
         return torch.device("cuda")
     return torch.device("cpu")
+
+
+error_counter = Counter("prediction_error", "Number of prediction errors")
+request_counter = Counter("prediction_requests", "Number of prediction requests")
+request_latency = Histogram("prediction_latency_seconds", "Prediction latency in seconds")
 
 
 @asynccontextmanager
@@ -62,7 +68,6 @@ async def lifespan(app: FastAPI):
     yield
 
     print("Cleaning up")
-    del model
     model = None
     preprocess = None
     if device is not None and device.type == "cuda":
@@ -71,6 +76,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
+app.mount("/metrics", make_asgi_app())
 
 
 @app.get("/health")
@@ -85,25 +91,37 @@ async def health():
 
 @app.post("/predict/")
 async def predict(data: UploadFile = File(...)):
-    if model is None or device is None or preprocess is None:
-        raise HTTPException(status_code=503, detail="Model not loaded")
+    """
+    Make a prediction on a single image file.
+    """
+    # Metric for api monitoring
+    request_counter.inc()
+    with request_latency.time():
+        try:
+            if model is None or device is None or preprocess is None:
+                raise HTTPException(status_code=503, detail="Model not loaded")
 
-    try:
-        i_image = Image.open(data.file).convert("RGB")
-    except Exception:
-        raise HTTPException(status_code=400, detail="Could not decode image")
+            # Load and preprocess image from uploaded file
+            try:
+                i_image = Image.open(data.file).convert("RGB")
+            except Exception:
+                raise HTTPException(status_code=400, detail="Could not decode image")
+            x = preprocess(i_image).unsqueeze(0).to(device)
 
-    x = preprocess(i_image).unsqueeze(0).to(device)
+            # Make prediction
+            with torch.no_grad():
+                logits = model(x)
+                probs = torch.softmax(logits, dim=-1)[0]
+                pred_idx = int(torch.argmax(probs).item())
 
-    with torch.no_grad():
-        logits = model(x)
-        probs = torch.softmax(logits, dim=-1)[0]
-        pred_idx = int(torch.argmax(probs).item())
-
-    return {
-        "prediction": class_labels[pred_idx],
-        "probs": {
-            class_labels[0]: float(probs[0].item()),
-            class_labels[1]: float(probs[1].item()),
-        },
-    }
+            # Return prediction
+            return {
+                "prediction": class_labels[pred_idx],
+                "probs": {
+                    class_labels[0]: float(probs[0].item()),
+                    class_labels[1]: float(probs[1].item()),
+                },
+            }
+        except Exception as e:
+            error_counter.inc()
+            raise HTTPException(status_code=500, detail=str(e)) from e
