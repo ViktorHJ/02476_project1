@@ -687,14 +687,18 @@ uv run data download
 ### CPU/GPU Build switch, default is cpu
 If you want to run in the native OS (ouside docker) These commands switch the .toml file since UV does not support conditinal images.
 If you are not running a CUDA gpu the default is already set.
+
+Unix CUDA Switch to GPU:
 ```
-Unix CUDA Switch to GPU: sed -i 's/pytorch-cpu/pytorch-gpu/g' pyproject.toml && sed -i 's|https://download.pytorch.org/whl/cpu|https://download.pytorch.org/whl/cu124|g' pyproject.toml && rm uv.lock && uv sync
+sed -i 's/pytorch-cpu/pytorch-gpu/g' pyproject.toml && sed -i 's|https://download.pytorch.org/whl/cpu|https://download.pytorch.org/whl/cu124|g' pyproject.toml && rm uv.lock && uv sync
 ```
+UNIX / WINDOWS CPU Switch back to CPU:
 ```
-UNIX / WINDOWS CPU Switch back to CPU: sed -i 's/pytorch-gpu/pytorch-cpu/g' pyproject.toml && sed -i 's|https://download.pytorch.org/whl/cu124|https://download.pytorch.org/whl/cpu|g' pyproject.toml && rm uv.lock && uv sync
+sed -i 's/pytorch-gpu/pytorch-cpu/g' pyproject.toml && sed -i 's|https://download.pytorch.org/whl/cu124|https://download.pytorch.org/whl/cpu|g' pyproject.toml && rm uv.lock && uv sync
 ```
+MAC:
 ```
-MAC CPU sed -i '' 's/pytorch-gpu/pytorch-cpu/g' pyproject.toml && sed -i '' 's|https://download.pytorch.org/whl/cu124|https://download.pytorch.org/whl/cpu|g' pyproject.toml && rm uv.lock && uv sync
+sed -i '' 's/pytorch-gpu/pytorch-cpu/g' pyproject.toml && sed -i '' 's|https://download.pytorch.org/whl/cu124|https://download.pytorch.org/whl/cpu|g' pyproject.toml && rm uv.lock && uv sync
 ```
 ## API
 ### Monitor API metrics
@@ -704,10 +708,9 @@ http://localhost:8000/metrics/
 uv run uvicorn cifakeclassification.api:app --port 8000 --app-dir src
 
 ### To make prediction on image using API:
-curl -X POST "http://127.0.0.1:8000/predict/" \
-
-  -F 'data=@"data/test/FAKE/0 (2).jpg"'
-
+```
+curl -X POST http://127.0.0.1:8000/predict/ -F "data=@data/test/FAKE/0 (2).jpg"
+```
 data/test/FAKE/0 (2).jpg is just the path to an example image. This path should merely lead to a 3x32x32 image
 
 # Docker build and run
@@ -754,6 +757,10 @@ docker build -f dockerfiles/api.dockerfile -t cifake-api .
 ```
 docker run --rm -p 8000:8000 cifake-api
 ```
+Then on the host pc connect to the sever and input some 3x32x32 image, for example data/test/FAKE/0 (2).jpg 
+```
+curl -X POST http://127.0.0.1:8000/predict/ -F "data=@data/test/FAKE/0 (2).jpg"
+```
 ### GPU build (Linux with NVIDIA)
 ```
 sed -i 's/pytorch-cpu/pytorch-gpu/g' pyproject.toml && sed -i 's|https://download.pytorch.org/whl/cpu|https://download.pytorch.org/whl/cu124|g' pyproject.toml && rm uv.lock && uv sync
@@ -765,3 +772,4 @@ docker build -f dockerfiles/train_cuda.dockerfile -t train-gpu .
 docker run -it --ipc=host --gpus all --entrypoint sh train-gpu
 ```
 From here its the same as above, enjoy the shell (:
+
