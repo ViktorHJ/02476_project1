@@ -1,45 +1,75 @@
-name: Unit Tests
+# name: Unit Tests
+
+# on:
+#   push:
+#     branches:
+#       - main
+#   pull_request:
+#     branches:
+#       - main
+
+# jobs:
+#   test:
+#     runs-on: ${{ matrix.operating-system }}
+#     strategy:
+#       matrix:
+#         operating-system: ["ubuntu-latest", "windows-latest", "macos-latest"]
+#         python-version: ["3.13"]
+
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v4
+
+#       - name: Set up Python
+#         uses: actions/setup-python@v5
+#         with:
+#           python-version: ${{ matrix.python-version }}
+
+#       - name: Install uv
+#         uses: astral-sh/setup-uv@v3
+#         with:
+#           version: "latest"
+
+#       - name: Install dependencies
+#         run: |
+#           uv sync --group dev
+
+#       - name: fetch data
+#         run: |
+#           uv run data download
+
+#       - name: Build a docker image to verify Dockerfile
+#         run: |
+#           docker build -f dockerfiles/api.Dockerfile -t cifake-api .
+
+
+#       - name: Run tests & coverage
+#         run: |
+#           uv run coverage erase
+#           uv run coverage run -m pytest tests/
+#           uv run coverage report -m
+
+name: Unit Tests (Docker)
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
   test:
-    runs-on: ${{ matrix.operating-system }}
-    strategy:
-      matrix:
-        operating-system: ["ubuntu-latest", "windows-latest", "macos-latest"]
-        python-version: ["3.13"]
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
+      - name: Build test image
+        run: docker build -f dockerfiles/api.dockerfile -t cifake-tests .
 
-      - name: Install uv
-        uses: astral-sh/setup-uv@v3
-        with:
-          version: "latest"
-
-      - name: Install dependencies
+      - name: Run tests inside container
         run: |
-          uv sync --group dev
-
-      - name: fetch data
-        run: |
-          uv run data download
-
-      - name: Run tests & coverage
-        run: |
-          uv run coverage erase
-          uv run coverage run -m pytest tests/
-          uv run coverage report -m
+          docker run --rm \
+            --entrypoint sh \
+            cifake-tests \
+            -lc "uv run coverage erase && uv run coverage run -m pytest tests/ && uv run coverage report -m"
