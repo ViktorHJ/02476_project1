@@ -1,0 +1,22 @@
+import os
+from pathlib import Path
+import wandb
+
+run = wandb.init(project="02476_project1", entity="vhj-dtu", job_type="inference")
+
+artifact = run.use_artifact("vhj-dtu/02476_project1/model-0qmzh7ah:v0", type="model")
+artifact_dir = Path(artifact.download())
+
+# Find a likely weights file
+candidates = []
+for pattern in ("*.ckpt", "*.pth", "*.pt"):
+    candidates.extend(artifact_dir.rglob(pattern))
+
+if not candidates:
+    raise FileNotFoundError(f"No .ckpt/.pth/.pt files found in {artifact_dir}")
+
+print("Artifact downloaded to:", artifact_dir)
+print("Found model files:", [str(p) for p in candidates])
+
+model_path = candidates[0]  # pick the first (or choose by name)
+print("Using:", model_path)
