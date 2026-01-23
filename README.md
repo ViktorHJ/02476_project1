@@ -117,7 +117,7 @@ will check the repositories and the code to verify your answers.
 * [x] Add a model to `model.py` and a training procedure to `train.py` and get that running (M6)
 * [x] Remember to fill out the `requirements.txt` and `requirements_dev.txt` file with whatever dependencies that you
     are using (M2+M6)
-* [t] Remember to comply with good coding practices (`pep8`) while doing the project (M7)
+* [x] Remember to comply with good coding practices (`pep8`) while doing the project (M7)
 * [t] Do a bit of code typing and remember to document essential parts of your code (M7)
 * [t] Setup version control for your data or part of your data (M8)
 * [o] Add command line interfaces and project commands to your code where it makes sense (M9)
@@ -205,7 +205,7 @@ s224819, s224167, s224199
 >
 > Answer:
 
---- question 3 fill here ---
+We did not end up using any frameworks or packages that were not covered in the course. 
 
 ## Coding environment
 
@@ -225,7 +225,7 @@ s224819, s224167, s224199
 >
 > Answer:
 
---- question 4 fill here ---
+We used `uv` for managing our dependencies. Whenever we needed to add a new dependency, we would run `uv add <package-name>` which would both install the package in our local environment and also update the `pyproject.toml` file with the new dependency. To get an exact copy of our environment, a new team member would have to clone the git repository, install `uv`, and then finally simply run `uv sync` which would install all the dependencies listed in `pyproject.toml`. 
 
 ### Question 5
 
@@ -241,7 +241,7 @@ s224819, s224167, s224199
 >
 > Answer:
 
---- question 5 fill here ---
+We started out with the basic cookiecutter template, that contained (somewhat) empty files for data loading, model, training, evaluation as well as many other folders and files. We filled these basic files out, and got the basic functionality of our project working. However, when we wanted to add the API functionality, we had to create a file called fetch_model, which would download a model from W&B and store it locally, so that the API could access it. This was one deviation, and the other was that in the basic template, all tests were lumped together in a single test folder. To work more in accordance with the course material, we created seperate folders for testing the API, as well as the performance/load-tests.
 
 ### Question 6
 
