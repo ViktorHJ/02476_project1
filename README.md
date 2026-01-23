@@ -225,7 +225,7 @@ We did not end up using any frameworks or packages that were not covered in the 
 >
 > Answer:
 
-We used `uv` for managing our dependencies. Whenever we needed to add a new dependency, we would run `uv add <package-name>` which would both install the package in our local environment and also update the `pyproject.toml` file with the new dependency. To get an exact copy of our environment, a new team member would have to clone the git repository, install `uv`, and then finally simply run `uv sync` which would install all the dependencies listed in `pyproject.toml`. 
+We used `uv` for managing our dependencies. Whenever we needed to add a new dependency, we would run `uv add <package-name>` which would both install the package in our local environment and also update the `pyproject.toml` file with the new dependency. To get an exact copy of our environment, a new team member would have to clone the git repository, install `uv`, and then finally simply run `uv sync` which would install all the dependencies listed in `pyproject.toml`.
 
 ### Question 5
 
@@ -279,7 +279,7 @@ These concepts are important when working in larger projects, due to different r
 >
 > Answer:
 
-In total, we implemented 7 tests. 4 of these tests were for the data loading part of our code, ensuring that the data was being loaded correctly, and that the transformations were being applied as intended. 2 of these tests were for the API, one to test the health endpoint, and one to test the inference endpoint. Finally...
+In total, we implemented 7 tests. 4 of these tests were for the data loading part of our code, ensuring that the data was being loaded correctly, and that the transformations were being applied as intended. 2 of these tests were for the API, one to test the health endpoint, and one to test the inference endpoint. Finally... (IKKE FÆRDIG HER)
 
 ### Question 8
 
@@ -294,7 +294,7 @@ In total, we implemented 7 tests. 4 of these tests were for the data loading par
 >
 > Answer:
 
-Our total code coverage is 62%; 85% of the api-code is covered, 70% of the data and 43% of the model code. Even if we had a code coverage of 100%, we would not trust the code to be error free. The reason for this is that code coverage only tells us how much of the code is being executed during the tests, but it does not tell us anything about the quality of the tests themselves. We could be writing very bad/unrelated tests that do not reflect the processes of training and/or inference at all, and still have a code coverage of 100%. 
+Our total code coverage is 62%; 85% of the api-code is covered, 70% of the data and 43% of the model code. Even if we had a code coverage of 100%, we would not trust the code to be error free. The reason for this is that code coverage only tells us how much of the code is being executed during the tests, but it does not tell us anything about the quality of the tests themselves. We could be writing very bad/unrelated tests that do not reflect the processes of training and/or inference at all, and still have a code coverage of 100%. (IKKE FÆRDIG HER)
 
 ### Question 9
 
@@ -324,7 +324,7 @@ We made use of branches in our project. We primarily worked on main if it was sm
 >
 > Answer:
 
---- question 10 fill here ---
+We did not make use of DVC in our project. However, it would have been beneficial to use DVC if we had a dataset that would change over time. Since the timeframe for our project was relatively short, (3 weeks), we did not experience any changes to the dataset, and did therefore not see the need for using DVC. If we had worked with recent medical data, that is constantly being updated, DVC would have been very useful, as it would have allowed us to keep track of the evolution of the dataset, and we could focus on working with one specific version of the data.
 
 ### Question 11
 
@@ -341,7 +341,9 @@ We made use of branches in our project. We primarily worked on main if it was sm
 >
 > Answer:
 
---- question 11 fill here ---
+For our continuous integration, we used two different methods: pre-commits and GitHub actions. 
+- For pre-commits, we used `ruff` which would automatically check the code for any linting errors or formatting issues before allowing us to commit, ensuring that the code always followed the PEP8 guidelines. Furthermore, we also made sure all our tests were passing before allowing a commit, using pytest. Finally, we made use of githubs own hooks that did minor checks on stuff like trailing whitespace, end-of-file newlines, correct yaml formatting etc. This was all to make sure that the committed product was readable.
+- For GitHub actions, we had three different workflows: one for linting, which more or less does the same as the pre-commit, but now on the remote repository. The second workflow was for running our tests, where a docker image was built, and then the tests were run inside the docker container, to ensure that the code would also work in a docker-environment. The third workflow was a standard pre-commit-update workflow, that would automatically update our pre-commit hooks every day. We also had a dependabot setup, that would check for outdated dependencies every week, and create pull requests for updating them. We did not make use of caching(?)
 
 ## Running code and tracking experiments
 
