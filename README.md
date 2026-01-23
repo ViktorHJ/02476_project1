@@ -119,8 +119,8 @@ will check the repositories and the code to verify your answers.
     are using (M2+M6)
 * [x] Remember to comply with good coding practices (`pep8`) while doing the project (M7)
 * [t] Do a bit of code typing and remember to document essential parts of your code (M7)
-* [t] Setup version control for your data or part of your data (M8)
-* [o] Add command line interfaces and project commands to your code where it makes sense (M9)
+* [x] Setup version control for your data or part of your data (M8)
+* [x] Add command line interfaces and project commands to your code where it makes sense (M9)
 * [x] Construct one or multiple docker files for your code (M10)
 * [x] Build the docker files locally and make sure they work as intended (M10)
 * [x] Write one or multiple configurations files for your experiments (M11)
@@ -161,7 +161,7 @@ will check the repositories and the code to verify your answers.
 * [ ] Create one or more alert systems in GCP to alert you if your app is not behaving correctly (M28)
 * [x] If applicable, optimize the performance of your data loading using distributed data loading (M29)
 * [x] If applicable, optimize the performance of your training pipeline by using distributed training (M30)
-* [o] Play around with quantization, compilation and pruning for you trained models to increase inference speed (M31)
+* [ ] Play around with quantization, compilation and pruning for you trained models to increase inference speed (M31)
 
 ### Extra
 
@@ -743,13 +743,12 @@ docker run --rm -p 8000:8000 cifake-api
 ```
 ### GPU build (Linux with NVIDIA)
 ```
-docker build \
-  -f dockerfiles/train.dockerfile \
-  -t train-gpu \
-  --build-arg BASE_IMAGE=pytorch/pytorch:2.2.0-cuda12.1-cudnn8-runtime .
-
-docker run --gpus all train-gpu # Some script
+docker build -f dockerfiles/train_cuda.dockerfile -t train-gpu .
 ```
+```
+```
+
+
 
 
 
