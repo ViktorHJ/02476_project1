@@ -119,8 +119,8 @@ will check the repositories and the code to verify your answers.
     are using (M2+M6)
 * [x] Remember to comply with good coding practices (`pep8`) while doing the project (M7)
 * [t] Do a bit of code typing and remember to document essential parts of your code (M7)
-* [t] Setup version control for your data or part of your data (M8)
-* [o] Add command line interfaces and project commands to your code where it makes sense (M9)
+* [x] Setup version control for your data or part of your data (M8)
+* [x] Add command line interfaces and project commands to your code where it makes sense (M9)
 * [x] Construct one or multiple docker files for your code (M10)
 * [x] Build the docker files locally and make sure they work as intended (M10)
 * [x] Write one or multiple configurations files for your experiments (M11)
@@ -161,7 +161,7 @@ will check the repositories and the code to verify your answers.
 * [ ] Create one or more alert systems in GCP to alert you if your app is not behaving correctly (M28)
 * [x] If applicable, optimize the performance of your data loading using distributed data loading (M29)
 * [x] If applicable, optimize the performance of your training pipeline by using distributed training (M30)
-* [o] Play around with quantization, compilation and pruning for you trained models to increase inference speed (M31)
+* [ ] Play around with quantization, compilation and pruning for you trained models to increase inference speed (M31)
 
 ### Extra
 
@@ -439,7 +439,7 @@ We made use of branches in our project. We primarily worked on main if it was sm
 >
 > Answer:
 
-We never used any GCP service, as our model is very small in memory and our data can be loaded in from kaggle in very short time. To store the model and training metrics, we both stored models in W&B and when evaluating a model in our evaluate.py script, we needed a model checkpoint to be saved locally. This eliminated any direct need for using GCP services, although in hindsight, being more consistent in how the models were accessed and stored would have likely made the application easier to set up at the end of the development phase, as we would not need the user to be able to access W&B, simply for loading in a model to make predictions with.
+We never used any GCP service, as our model is very small in memory and our data can be loaded in from kaggle in very short time. We stored the model parameters locally and the model architecture and training metrics we stored seperately on W&B. This eliminated any direct need for using GCP services, although in hindsight, using GCP for storing the model would have likely made the application easier to set up at the end of the development phase, as we would not need the user to be able to access a locally stored model, in order to use it, but instead we could have run the API using a model stored using GCP.
 
 ### Question 18
 
@@ -454,7 +454,7 @@ We never used any GCP service, as our model is very small in memory and our data
 >
 > Answer:
 
-As mentioned, we did not use any GCP service. The compute engine would have been to rent a VM from google, where we could request more computing power than we have access to on our local machines. However, for our model, we had plenty of computing power on our local machines to train it. The process could probably still have been speed up if we used a VM for google.
+As mentioned, we did not use any GCP service. The compute engine would have been to rent a VM from google, where we could request more computing power than we have access to on our local machines. However, for our model, we had plenty of computing power on our local machines to train it. The process could probably still have been optimized further for training time if we used a VM from google.
 
 ### Question 19
 
@@ -496,7 +496,7 @@ As mentioned, we did not use any GCP service. The compute engine would have been
 >
 > Answer:
 
---- question 22 fill here ---
+We train our models locally, as they are very small models (less than a megabyte), and they don't take very long to train at all. This could have changed, if the model's were set to train for more epochs. Further, it could have been relevant when running sweeps for learning the optimal hyperparameters, as that requires training lots of models. This never really became an issue in our project, and that is why we never decided to do model-training in the cloud. However, after training a model, its model-checkpoint was saved both locally, and in the cloud on W&B. Saving it in the cloud on W&B allowed us to download past trained models.
 
 ## Deployment
 
@@ -513,7 +513,7 @@ As mentioned, we did not use any GCP service. The compute engine would have been
 >
 > Answer:
 
---- question 23 fill here ---
+We used FastAPI to write an API for our model. It loads in a local model-checkpoint and, using a predict function, the user can then request the model's prediction on a given image.
 
 ### Question 24
 
@@ -708,17 +708,6 @@ data/test/FAKE/0 (2).jpg is just the path to an example image. This path should 
 docker build -f dockerfiles/train.dockerfile -t train-cpu .
 ```
 ```
-docker run --rm -v $(pwd)/data:/app/data train-cpu data download
-```
-```
-docker run --rm \
-  --ipc=host \
-  -v $(pwd)/data:/app/data \
-  -e WANDB_MODE=offline \
-  train-cpu train
-```
-For a shell enviroment instead of runing commands like that, instead run:
-```
 docker run -it --ipc=host --entrypoint sh train-cpu
 ```
 then in the shell you can run uv commands as normal
@@ -741,10 +730,13 @@ uv run wandb sweep configs/sweep_bayes.yaml
 uv run wandb sweep configs/sweep_grid.yaml
 ```
 ```
-uv run wandb agent vhj-dtu/02476_project1/ [Some sweep id]
+uv run wandb agent vhj-dtu/02476_project1/ <Some sweep id>
 ```
 ```
 uv run evaluate
+```
+```
+uv run visualize visualize-training-metrics-from-wandb-run <wandb run name>
 ```
 ## Docker API
 ```
@@ -755,13 +747,16 @@ docker run --rm -p 8000:8000 cifake-api
 ```
 ### GPU build (Linux with NVIDIA)
 ```
-docker build \
-  -f dockerfiles/train.dockerfile \
-  -t train-gpu \
-  --build-arg BASE_IMAGE=pytorch/pytorch:2.2.0-cuda12.1-cudnn8-runtime .
-
-docker run --gpus all train-gpu # Some script
+docker build -f dockerfiles/train_cuda.dockerfile -t train-gpu .
 ```
+```
+```
+
+
+
+
+
+
 
 
 
