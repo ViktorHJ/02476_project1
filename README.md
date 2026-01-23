@@ -378,7 +378,7 @@ We used Hydra for configuring our experiments. This allowed us to create configu
 >
 > Answer:
 
---- question 13 fill here ---
+As previously mentioned, we used Hydra for configuring our experiments. This allowed us to create configuration files in yaml-format, where we could specify hyperparameters and other settings for our experiments. Using Hydra ensured that no information was lost when running experiments, as all the hyperparameters and settings were stored in the configuration files, and using the same random seed would ensure that the results were reproducible. To reproduce an experiment, one would have to run the same script with the same configuration file and random seed. The point of using docker was also to ensure reproducibility, as the docker container would have the same environment and dependencies as the original environment, ensuring that the code would run the same way regardless of where it was run.
 
 ### Question 14
 
@@ -395,7 +395,7 @@ We used Hydra for configuring our experiments. This allowed us to create configu
 >
 > Answer:
 
---- question 14 fill here ---
+![alt text](q14_1.png)
 
 ### Question 15
 
